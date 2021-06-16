@@ -8,6 +8,48 @@
 <meta name="description" content="The official persona homepage of Dylan Pavelko">
 <style>
 
+body {
+    font: 100% / 1.5 Arial;
+  }
+
+  * {
+    margin:0;
+    padding:0;
+  }
+
+ #group2 {
+    background-image: url("rocks2.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color:  white;
+    margin-left:  0px;
+    min-height: 300px;
+
+  }
+
+  .title {
+    
+  	text-align: center;
+  }
+
+@media (max-width:  949px){
+	#group2{
+		left: 50%;
+    	padding-top: 175px;
+    	font-size: 200%;
+	}
+
+	#group3, #group4, #group5, #group6, #group7 {
+    	background: rgb(153,216,101);
+  	}
+
+  	body{
+  		background: rgb(153,216,101);
+  	}
+}
+
+@media (min-width: 950px) {
   /* Parallax base styles
   --------------------------------------------- */
 
@@ -19,6 +61,7 @@
     -webkit-perspective: 300px;
     perspective: 300px;
   }
+
 
   .parallax__group {
     position: relative;
@@ -95,14 +138,8 @@
     overflow: hidden;
   }
 
-  body {
-    font: 100% / 1.5 Arial;
-  }
 
-  * {
-    margin:0;
-    padding:0;
-  }
+
 
   .parallax {
     font-size: 200%;
@@ -129,7 +166,6 @@
   }
   #group1 .parallax__layer--base {
     color:  white;
-
   }
 
   #group2 {
@@ -186,10 +222,14 @@
     z-index:100;
     bottom: 1vh;
     top: auto;
-    font-size:80%;
+
     text-align:center;
     width: 100%;
   }
+
+}
+
+
 </style>
 </head>
 
@@ -206,7 +246,7 @@
     </div>
     <div id="group3" class="parallax__group">
       <div class="parallax__layer parallax__layer--fore">
-        <div style='float: right;'><a href='https://www.linkedin.com/in/dylanpavelko/' target='_blank'><img src='linkedin.svg' height='250px' '/></a></div>
+        <div style='float: right;'><a href='https://www.linkedin.com/in/dylanpavelko/' target='_blank'><img src='linkedin.svg' height='250px'/></a></div>
       </div>
       <div class="parallax__layer parallax__layer--base">
         <div style='padding: 2em;'>
