@@ -1,0 +1,281 @@
+<html>
+	<head>
+		<title>Stock Analysis</title>
+		<style>
+			body {
+				padding:  0;
+				margin:  0;
+				background-color: #DEDEDE;
+			}
+
+			#main{
+				margin:  1em;
+			}
+
+			.disclaimer {
+				text-align: center;
+				background-color: #f1f1f1;
+				color: #777777;
+				padding:  0.5em;
+			}
+
+			.sector {
+				margin:  1em;
+				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+				padding: 16px;
+			  	text-align: center;
+			  	background-color: #444444;
+			  	width:  300px;
+			  	display:  inline-block;
+			  	vertical-align:  top;
+			  	border-radius: 25px;
+			  	color:  #eee;
+							  	
+			}
+
+			.sectors{
+
+			}
+
+			.sector-icon {
+				height: 100px;
+				filter: invert(81%) sepia(7%) saturate(14%) hue-rotate(349deg) brightness(89%) contrast(92%);
+				/* https://codepen.io/sosuke/pen/Pjoqqp */
+			}
+
+			.up {
+				color:  #34eb6b;
+			}
+
+			.down {
+				color:  #ff0000;
+			}
+
+			.market-list {
+				text-align: left;
+				list-style-type: none;
+				overflow:  hidden;
+			}
+
+			.market-ticker {
+				float:  left;
+				margin-right:  1em;
+			}
+
+			.stock-list {
+				text-align: left;
+				list-style-type: none;
+
+			}
+
+			.details {
+				visibility: hidden;
+				position: absolute;
+				z-index:  1;
+				background-color: #333;
+				color:  white;
+				padding:  1em;
+				min-width:  300px;
+			}
+
+			.details a {
+				color:  cyan;
+			}
+
+			li {
+				position: relative;
+				display: inline-block;
+			}
+
+			li:hover .details {
+				visibility:  visible;
+			}
+		</style>
+	</head>
+	<body>
+		<div class='disclaimer'>
+			This information was created for my own personal analysis and should not be mistaken for professional financial investing advice.
+		</div>
+		<div id='main'>
+			<div>
+				<strong>Philosophy</strong>
+				<ul>
+					<li>You can't time the market.</li>
+					<li>Choose companies you think will grow long-term.</li>
+					<li>Try and hold shares long-term.</li>
+					<li>Trade shares not based on price, but when there is a better spot for your money.</li>
+					<li>Your goal is to not just make money, but beat the long-term gains of mutual funds. (otherwise just invest in a fund)</li>
+					<li>Invest in companies that inspire you about the future of the world.</li>
+				</ul>
+			</div>
+			<div>Market Data Last Updated: <span id='last-updated'></span></div>
+			<div>
+				Key: Ticker: % Change in Last Year; Avg % Change Years 2-5
+			</div>
+			<div>
+				<div style="text-align: center;">
+					<h3>Market Overview</h3>
+				</div>
+				<ul class='market-list'>
+					<li class='market-ticker'>DOW</li>
+					<li class='market-ticker'>S&P</li>
+					<li class='market-ticker'>Vanguard Fund</li>
+				</ul>
+			</div>
+			<div>
+				Show Percentages
+				<form>
+					<input type="radio" id="html" name="fav_language" value="HTML">
+					<label for="html">Based on Individual Price</label><br>
+					<input type="radio" id="css" name="fav_language" value="CSS">
+					<label for="css">Compared to Market Averages</label><br>
+					<input type="radio" id="javascript" name="fav_language" value="JavaScript">
+					<label for="javascript">Compared to Sector Median</label>
+				</form>
+			</div>
+			<div style="text-align: center;">
+				<h3>Market Sectors</h3>
+			</div>
+			<div id='sectors'>
+
+				<div class='sector'>
+					<img src='icons/media.svg' class='sector-icon' />
+					<h4>Communication Services</h4> Telecoms, Media, Social Media, Entertainment
+					<ul class='stock-list'>
+						<li class='up'>Average ###</li>
+					</ul>
+					<ul id='comm-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/discretionary.svg' class='sector-icon' />
+					<h4>Consumer Discretionary (Cyclical)</h4> Business targetting consumers for items such as automobiles, apparel, hotels, restraunts, lesiure, luxry goods, etc.
+					<ul id='discretionary-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/staples.svg' class='sector-icon' />
+					<h4>Consumer Staples</h4> Food manufactuers and distributors; nondurable household goods; personal care products; beverages; etc.
+					<ul id='staples-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/energy.svg' class='sector-icon' />
+					<h4>Energy</h4> Companies that explore, produce, refine, and market fossil fules such as oil, gas and coal.
+					<ul id='energy-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/finserv.svg' class='sector-icon' />
+					<h4>Financial Services</h4> Banks, Financial Processors, Investment, Mortgage Companies, etc.
+					<ul id='financial-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/healthcare.svg' class='sector-icon' />
+					<h4>Healthcare</h4> Meidcal Device Manufacturers, Medical Service Providers, Biotech, Pharmaceuticals, etc.
+					<ul id='healthcare-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/industrial.svg' class='sector-icon' />
+					<h4>Industrials</h4> Production of capital good likes aircraft, electrical equipment, heavy machinery, etc.
+					<ul id='industrials-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/materials.svg' class='sector-icon' />
+					<h4>Materials</h4> Chemical companies, mining, metal business, logging, etc.
+					<ul id='materials-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/realestate.svg' class='sector-icon' />
+					<h4>Real Estate</h4> Real Estate Investement Trusts, Real Estate Development and Management Companies.
+					<ul id='realestate-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/technology.svg' class='sector-icon' />
+					<h4>Technology</h4> Software, Hardware, and semiconductor companies. 
+					<ul id='technology-stocks' class='stock-list'>
+					</ul>
+				</div>
+				<div class='sector'>
+					<img src='icons/utilities.svg' class='sector-icon' />
+					<h4>Utilities</h4> Water, Gas, and Electricity Service Providers
+					<ul id='utilities-stocks' class='stock-list'>
+					</ul>
+				</div>
+			</div>
+		</div>
+		 <script>
+		 	fetch('stock_data.json')
+		 		.then(response => response.json())
+		 		.then(data => {
+		 			//console.log(data.stocks)
+		 			document.querySelector('#last-updated').innerText = data.updated
+		 			document.querySelector('#comm-stocks').innerHTML = build_stock_list_from_stocks(filter_stocks_by('Communication', data.stocks))
+		 			document.querySelector('#discretionary-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Discretionary', data.stocks))
+		 			document.querySelector('#staples-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Staples', data.stocks))
+		 			document.querySelector('#energy-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Energy', data.stocks))
+		 			document.querySelector('#financial-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Financial', data.stocks))
+		 			document.querySelector('#healthcare-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Healthcare', data.stocks))
+		 			document.querySelector('#industrials-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Industrials', data.stocks))
+		 			document.querySelector('#materials-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Materials', data.stocks))
+		 			document.querySelector('#realestate-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Real Estate', data.stocks))
+		 			document.querySelector('#technology-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Technology', data.stocks))
+		 			document.querySelector('#utilities-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Utilities', data.stocks))
+		 		})
+
+		 	function filter_stocks_by(sector, stocks){
+		 		filtered_stocks = []
+		 		stocks.forEach( function(s, index){
+		 			if(s.Sector == sector){
+		 				filtered_stocks.push(s)
+		 			}
+		 		})
+		 		return filtered_stocks
+		 	}
+
+		 	function get_hue_number(percent){
+		 		if(percent < 2.6){
+		 			return 100 - (percent/4 * 100)
+		 		}else{
+		 			return 35
+		 		}
+		 		
+		 	}
+
+		 	function build_stock_list_from_stocks(stocks){
+		 		html = ""
+		 		stocks.forEach( function(stock, index){
+		 			html += "<li ticker-name='" + stock.Name + "''><strong>" + stock.Ticker + " : </strong> " 
+		 			if(stock['1Y Change'] >= 0){
+		 				html += "<span class='up' style='color:hsl(131, 100%, "+get_hue_number(stock['1Y Change']).toFixed(1)+"%)'>"
+		 			} else {
+		 				html += "<span class='down'>"
+		 			}
+		 			html +=  (stock['1Y Change'] * 100).toFixed(1) + "%; "
+		 			if(stock['5Y Annual Avg Change'] >= 0){
+		 				html += "<span class='up' style='color:hsl(131, 100%, "+get_hue_number(stock['5Y Annual Avg Change']).toFixed(1)+"%)'>"
+		 			} else {
+		 				html += "<span class='down'>"
+		 			}
+		 			html += " " + (stock['5Y Annual Avg Change'] * 100).toFixed(1) + "%" + "</span>" + 
+		 			"<span class='details'><strong>"+ stock.Name +"</strong><br><em>Industry:</em> "+ stock.Industry
+		 			if(stock['Last Close'] != null){
+		 				html +=  "<br/><em>Last Close:</em> $" + stock['Last Close'].toFixed(2)
+		 			}
+		 			html += "<br/><em>EMA Score:</em> " + stock['EMA Bull Score'].toFixed(2) +
+		 			"<br/><br/>1Y Change vs Sector Median: " + (stock['1Y vs Sector Mdn'] * 100).toFixed(2) + "%" +
+		 			"<br/>1Y Change vs Market Avg" + 
+		 			"<br/><a href='https://finance.yahoo.com/quote/"+stock.Ticker+"' target='_blank'>Yahoo Finance</a>"+
+		 			"</span></li>"
+		 		})
+		 		return html
+		 	}
+		 </script>
+	</body>
+	<!-- icons from uxwing.com -->
+</html>
