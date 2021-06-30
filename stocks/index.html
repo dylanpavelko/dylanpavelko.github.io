@@ -82,11 +82,6 @@
 				color:  cyan;
 			}
 
-			li {
-				position: relative;
-				display: inline-block;
-			}
-
 			li:hover .details {
 				visibility:  visible;
 			}
@@ -125,11 +120,11 @@
 			<div>
 				Show Percentages
 				<form>
-					<input type="radio" id="html" name="fav_language" value="HTML">
-					<label for="html">Based on Individual Price</label><br>
-					<input type="radio" id="css" name="fav_language" value="CSS">
+					<input type="radio" id="price" name="stock_compare" value="price" onchange="showPriceComp()"checked='checked'>
+					<label for="html">Based on Stock Price</label><br>
+					<input type="radio" id="market" name="stock_compare" value="market" onchange="showMarketComp()">
 					<label for="css">Compared to Market Averages</label><br>
-					<input type="radio" id="javascript" name="fav_language" value="JavaScript">
+					<input type="radio" id="sector" name="stock_compare" value="sector"  onchange="showSectorComp()">
 					<label for="javascript">Compared to Sector Median</label>
 				</form>
 			</div>
@@ -142,7 +137,7 @@
 					<img src='icons/media.svg' class='sector-icon' />
 					<h4>Communication Services</h4> Telecoms, Media, Social Media, Entertainment
 					<ul class='stock-list'>
-						<li class='up'>Average ###</li>
+						<li id='communications-sector'>Median ###</li>
 					</ul>
 					<ul id='comm-stocks' class='stock-list'>
 					</ul>
@@ -150,82 +145,171 @@
 				<div class='sector'>
 					<img src='icons/discretionary.svg' class='sector-icon' />
 					<h4>Consumer Discretionary (Cyclical)</h4> Business targetting consumers for items such as automobiles, apparel, hotels, restraunts, lesiure, luxry goods, etc.
+					<ul class='stock-list'>
+						<li id='discretionary-sector'>Median ###</li>
+					</ul> 
 					<ul id='discretionary-stocks' class='stock-list'>
 					</ul>
 				</div>
 				<div class='sector'>
 					<img src='icons/staples.svg' class='sector-icon' />
 					<h4>Consumer Staples</h4> Food manufactuers and distributors; nondurable household goods; personal care products; beverages; etc.
+					<ul class='stock-list'>
+						<li id='staples-sector'>Median ###</li>
+					</ul> 
 					<ul id='staples-stocks' class='stock-list'>
 					</ul>
 				</div>
 				<div class='sector'>
 					<img src='icons/energy.svg' class='sector-icon' />
 					<h4>Energy</h4> Companies that explore, produce, refine, and market fossil fules such as oil, gas and coal.
+					<ul class='stock-list'>
+						<li id='energy-sector'>Median ###</li>
+					</ul> 
 					<ul id='energy-stocks' class='stock-list'>
 					</ul>
 				</div>
 				<div class='sector'>
 					<img src='icons/finserv.svg' class='sector-icon' />
 					<h4>Financial Services</h4> Banks, Financial Processors, Investment, Mortgage Companies, etc.
+					<ul class='stock-list'>
+						<li id='financial-sector'>Median ###</li>
+					</ul> 
 					<ul id='financial-stocks' class='stock-list'>
 					</ul>
 				</div>
 				<div class='sector'>
 					<img src='icons/healthcare.svg' class='sector-icon' />
 					<h4>Healthcare</h4> Meidcal Device Manufacturers, Medical Service Providers, Biotech, Pharmaceuticals, etc.
+					<ul class='stock-list'>
+						<li id='healthcare-sector'>Median ###</li>
+					</ul> 
 					<ul id='healthcare-stocks' class='stock-list'>
 					</ul>
 				</div>
 				<div class='sector'>
 					<img src='icons/industrial.svg' class='sector-icon' />
 					<h4>Industrials</h4> Production of capital good likes aircraft, electrical equipment, heavy machinery, etc.
+					<ul class='stock-list'>
+						<li id='industrials-sector'>Median ###</li>
+					</ul> 
 					<ul id='industrials-stocks' class='stock-list'>
 					</ul>
 				</div>
 				<div class='sector'>
 					<img src='icons/materials.svg' class='sector-icon' />
 					<h4>Materials</h4> Chemical companies, mining, metal business, logging, etc.
+					<ul class='stock-list'>
+						<li id='materials-sector'>Median ###</li>
+					</ul> 
 					<ul id='materials-stocks' class='stock-list'>
 					</ul>
 				</div>
 				<div class='sector'>
 					<img src='icons/realestate.svg' class='sector-icon' />
 					<h4>Real Estate</h4> Real Estate Investement Trusts, Real Estate Development and Management Companies.
+					<ul class='stock-list'>
+						<li id='realestate-sector'>Median ###</li>
+					</ul> 
 					<ul id='realestate-stocks' class='stock-list'>
 					</ul>
 				</div>
 				<div class='sector'>
 					<img src='icons/technology.svg' class='sector-icon' />
-					<h4>Technology</h4> Software, Hardware, and semiconductor companies. 
+					<h4>Technology</h4> Software, Hardware, and semiconductor companies.
+					<ul class='stock-list'>
+						<li id='technology-sector'>Median ###</li>
+					</ul> 
 					<ul id='technology-stocks' class='stock-list'>
 					</ul>
 				</div>
 				<div class='sector'>
 					<img src='icons/utilities.svg' class='sector-icon' />
 					<h4>Utilities</h4> Water, Gas, and Electricity Service Providers
+					<ul class='stock-list'>
+						<li id='utilities-sector'>Median ###</li>
+					</ul> 
 					<ul id='utilities-stocks' class='stock-list'>
 					</ul>
 				</div>
 			</div>
 		</div>
 		 <script>
-		 	fetch('stock_data.json')
-		 		.then(response => response.json())
+		 	$stock_data = ""
+
+		 	function display_stocks(data, comp_type){
+		 		document.querySelector('#comm-stocks').innerHTML = build_stock_list_from_stocks(filter_stocks_by('Communication', data.stocks), comp_type)
+	 			document.querySelector('#discretionary-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Discretionary', data.stocks), comp_type)
+	 			document.querySelector('#staples-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Staples', data.stocks), comp_type)
+	 			document.querySelector('#energy-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Energy', data.stocks), comp_type)
+	 			document.querySelector('#financial-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Financial', data.stocks), comp_type)
+	 			document.querySelector('#healthcare-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Healthcare', data.stocks), comp_type)
+	 			document.querySelector('#industrials-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Industrials', data.stocks), comp_type)
+	 			document.querySelector('#materials-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Materials', data.stocks), comp_type)
+	 			document.querySelector('#realestate-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Real Estate', data.stocks), comp_type)
+	 			document.querySelector('#technology-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Technology', data.stocks), comp_type)
+	 			document.querySelector('#utilities-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Utilities', data.stocks), comp_type)
+		 	}
+
+		 	fetch('stock_data.json', {
+		      headers : { 
+		        'Content-Type': 'application/json',
+		        'Accept': 'application/json'
+		       }
+
+		    })
+		    	.then(response => response.json())
 		 		.then(data => {
-		 			//console.log(data.stocks)
 		 			document.querySelector('#last-updated').innerText = data.updated
-		 			document.querySelector('#comm-stocks').innerHTML = build_stock_list_from_stocks(filter_stocks_by('Communication', data.stocks))
-		 			document.querySelector('#discretionary-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Discretionary', data.stocks))
-		 			document.querySelector('#staples-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Staples', data.stocks))
-		 			document.querySelector('#energy-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Energy', data.stocks))
-		 			document.querySelector('#financial-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Financial', data.stocks))
-		 			document.querySelector('#healthcare-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Healthcare', data.stocks))
-		 			document.querySelector('#industrials-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Industrials', data.stocks))
-		 			document.querySelector('#materials-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Materials', data.stocks))
-		 			document.querySelector('#realestate-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Real Estate', data.stocks))
-		 			document.querySelector('#technology-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Technology', data.stocks))
-		 			document.querySelector('#utilities-stocks').innerHTML= build_stock_list_from_stocks(filter_stocks_by('Utilities', data.stocks))
+		 			data.sector_medians.forEach( function(s, index){
+		 				if(s.sector != null){
+		 					html_string = ""
+			 				html_string += "Median: "
+			 				if(s.median_1y > 0){
+			 					html_string += "<span class='up' style='color:hsl(131, 100%, "+
+			 					get_hue_number(s.median_1y).toFixed(1)+"%)'>"
+			 				}else{
+			 					html_string += "<span class='down'>"
+			 				}
+			 				html_string += (s.median_1y* 100).toFixed(2) + "%</span>"  + "; "
+			 				if(s.median_5y > 0){
+			 					html_string += "<span class='up' style='color:hsl(131, 100%, "+
+			 					get_hue_number(s.median_5y).toFixed(1)+"%)'>"
+			 				}else{
+			 					html_string += "<span class='down'>"
+			 				} 
+			 				html_string += (s.median_5y* 100).toFixed(2) + "%</span>" 
+			 				if(s.sector == "Communication"){
+			 					document.querySelector('#communications-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Technology"){
+			 					document.querySelector('#technology-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Discretionary"){
+			 					document.querySelector('#discretionary-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Staples"){
+			 					document.querySelector('#staples-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Energy"){
+			 					document.querySelector('#energy-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Financial"){
+			 					document.querySelector('#financial-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Healthcare"){
+			 					document.querySelector('#healthcare-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Industrials"){
+			 					document.querySelector('#industrials-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Materials"){
+			 					document.querySelector('#materials-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Real Estate"){
+			 					document.querySelector('#realestate-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Utilities"){
+			 					document.querySelector('#utilities-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Technology"){
+			 					document.querySelector('#technology-sector').innerHTML = html_string 
+			 				}else if(s.sector == "Technology"){
+			 					document.querySelector('#technology-sector').innerHTML = html_string 
+			 				}
+			 			}
+		 			})
+		 			display_stocks(data, 'price')
+		 			$stock_data = data
 		 		})
 
 		 	function filter_stocks_by(sector, stocks){
@@ -247,22 +331,32 @@
 		 		
 		 	}
 
-		 	function build_stock_list_from_stocks(stocks){
+		 	function build_stock_list_from_stocks(stocks, comp_type){
+		 		if(comp_type == 'market'){
+		 			one_year = '1Y vs Mkt Avg'
+		 			five_year = '5Y vs Mkt Avg'
+		 		}else if(comp_type == 'sector'){
+		 			one_year = '1Y vs Sector Mdn'
+		 			five_year = '5Y vs Sector Mdn'
+		 		}else{
+		 			one_year = '1Y Change'
+		 			five_year = '5Y Annual Avg Change'
+		 		}
 		 		html = ""
 		 		stocks.forEach( function(stock, index){
-		 			html += "<li ticker-name='" + stock.Name + "''><strong>" + stock.Ticker + " : </strong> " 
-		 			if(stock['1Y Change'] >= 0){
-		 				html += "<span class='up' style='color:hsl(131, 100%, "+get_hue_number(stock['1Y Change']).toFixed(1)+"%)'>"
+		 			html += "<li ticker-name='" + stock.Name + "''><strong>" + stock.Ticker + ": </strong> " 
+		 			if(stock[one_year] >= 0){
+		 				html += "<span class='up' style='color:hsl(131, 100%, "+get_hue_number(stock[one_year]).toFixed(1)+"%)'>"
 		 			} else {
 		 				html += "<span class='down'>"
 		 			}
-		 			html +=  (stock['1Y Change'] * 100).toFixed(1) + "%; "
-		 			if(stock['5Y Annual Avg Change'] >= 0){
-		 				html += "<span class='up' style='color:hsl(131, 100%, "+get_hue_number(stock['5Y Annual Avg Change']).toFixed(1)+"%)'>"
+		 			html +=  (stock[one_year] * 100).toFixed(1) + "%</span>; "
+		 			if(stock[five_year] >= 0){
+		 				html += "<span class='up' style='color:hsl(131, 100%, "+get_hue_number(stock[five_year]).toFixed(1)+"%)'>"
 		 			} else {
 		 				html += "<span class='down'>"
 		 			}
-		 			html += " " + (stock['5Y Annual Avg Change'] * 100).toFixed(1) + "%" + "</span>" + 
+		 			html += " " + (stock[five_year] * 100).toFixed(1) + "%" + "</span>" + 
 		 			"<span class='details'><strong>"+ stock.Name +"</strong><br><em>Industry:</em> "+ stock.Industry
 		 			if(stock['Last Close'] != null){
 		 				html +=  "<br/><em>Last Close:</em> $" + stock['Last Close'].toFixed(2)
@@ -274,6 +368,18 @@
 		 			"</span></li>"
 		 		})
 		 		return html
+		 	}
+
+		 	function showMarketComp(){
+		 		display_stocks($stock_data, 'market')
+		 	}
+
+		 	function showSectorComp(){
+		 		display_stocks($stock_data, 'sector')
+		 	}
+
+		 	function showPriceComp(){
+		 		display_stocks($stock_data, 'price')
 		 	}
 		 </script>
 	</body>
