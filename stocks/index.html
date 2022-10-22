@@ -361,10 +361,10 @@
 		 			if(stock['Last Close'] != null){
 		 				html +=  "<br/><em>Last Close:</em> $" + stock['Last Close'].toFixed(2)
 		 			}
-		 			html += "<br/><em>EMA Score:</em> " + stock['EMA Bull Score'].toFixed(2) +
-		 			"<br/><br/>1Y Change vs Sector Median: " + (stock['1Y vs Sector Mdn'] * 100).toFixed(2) + "%" +
-		 			"<br/>1Y Change vs Market Avg" + 
-		 			"<br/><a href='https://finance.yahoo.com/quote/"+stock.Ticker+"' target='_blank'>Yahoo Finance</a>"+
+		 			// html += "<br/><em>EMA Score:</em> " + stock['EMA Bull Score'].toFixed(2) +
+		 			// "<br/><br/>1Y Change vs Sector Median: " + (stock['1Y vs Sector Mdn'] * 100).toFixed(2) + "%" +
+		 			// "<br/>1Y Change vs Market Avg" + 
+		 			// "<br/><a href='https://finance.yahoo.com/quote/"+stock.Ticker+"' target='_blank'>Yahoo Finance</a>"+
 		 			"</span></li>"
 		 		})
 		 		return html

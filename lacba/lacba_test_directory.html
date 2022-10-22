@@ -1,0 +1,100 @@
+<html>
+<head>
+</head>
+<body>
+	<h1>LACBA Directory</h1>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+		<div style='display: flex'>
+			<div style='width: 60%;'>
+		 		<object data="Mapping_L.A._neighborhood_boundaries.svg" type="image/svg+xml" id="la_map" width="100%" ></object>
+		 		Map sourced from <a href="https://commons.wikimedia.org/wiki/File:Mapping_L.A._neighborhood_boundaries.svg">The Los Angeles Times&#039; Mapping L.A. project</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0">CC BY-SA 2.0</a>, via Wikimedia Commons
+			</div>
+			<div id='directory-panel'>
+				<div>
+					<h2>Members</h2>
+				</div>
+				<div id='output'>Neighborhood: All</div>
+				<ul id='member-list'>
+				</ul>
+			</div>
+		<div id='preview'>
+			<p>test preview</p>
+		</div>
+
+		
+	</div>
+
+	<table id='directory-table' border='1'>
+	  <tr>
+	    <th>First Name</th>
+	    <th>Last Name</th>
+	    <th>Neighborhood</th>
+	    <th>Beekeeping Since</th>
+	  </tr>
+	</table>
+
+	<script>
+	$('p').click(function(){
+	   $(this).html("something else");
+	});
+
+	function add_row(first, last, neighborhood, year){
+
+	 	var table = document.getElementById("directory-table");
+
+	 	var row = table.insertRow(-1);
+
+	 	var cell1 = row.insertCell(0);
+	 	var cell2 = row.insertCell(1);
+	 	var cell3 = row.insertCell(2);
+	 	var cell4 = row.insertCell(3);
+
+	 	if(first != null){
+	 		cell1.innerHTML = first;
+	 	}else{
+	 		cell1.innerHTML = " "
+	 	}
+	 	if(last != null){
+		 	cell2.innerHTML = last;
+	 	}
+	 	if(neighborhood != null){
+		 	cell3.innerHTML = neighborhood;
+		}
+		if(year != null){
+			cell4.innerHTML = year;
+		}
+	 }
+
+	 function process_spreadsheet(data){
+	 	var first_name_column_index = 0
+		var last_name_column_index = 1
+		var neighborhood_index = 2
+		var year_index = 3
+	 	console.log(data.sheets[0].data[0].rowData)
+	 	spreadsheet_data = data.sheets[0].data[0].rowData
+	 	spreadsheet_data.forEach((row, index) => {
+	 		if(index > 0){
+		 		data_values = row.values
+	 			first_name = data_values[first_name_column_index].formattedValue
+	 			last_name = data_values[last_name_column_index].formattedValue
+	 			neighborhood = data_values[neighborhood_index].formattedValue
+	 			year = data_values[year_index].formattedValue
+
+	 			add_row(first_name, last_name, neighborhood, year)
+	 		}
+
+	 	})
+
+	 }
+
+
+	fetch('https://sheets.googleapis.com/v4/spreadsheets/1nTFudKEOyd0knhIabDRX8EMhW2UF2Ol4Q4g4zv7EreE?includeGridData=True&key=AIzaSyCxpwKJckK9Q3KqBhEM2rTOHH0m8hdMdTc')
+	  .then(response => response.json())
+	  .then(data => process_spreadsheet(data));
+
+	</script>
+</body>
+</html>
