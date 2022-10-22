@@ -25,7 +25,7 @@
 	</head>
 	<body>
 		<div class='disclaimer'>
-			This information was created for my own personal analysis and should not be mistaken for professional financial investing advice.
+			This information was created for my own personal analysis and should not be mistaken for professional financial advice.
 		</div>
 		<div>
 			<ul>
@@ -33,7 +33,19 @@
 			</ul>
 		</div>
 		<div>
-			<p>Occupation Selected: <span id='occupation_selected'></span></p>
+			<p><strong>Occupation Selected:</strong> <span id='occupation_selected'></span></p>
+			<ul id='programs_for_occupation'>
+				<lh><strong>Relevant Programs</strong></lh>
+			</ul>
+			<p><strong>Program Selected:</strong> <span id='program_selected'></span></p>
+			<table id='institutions' border='1'>
+				<tr>
+					<th>Institution</th>
+					<th>State</th>
+					<th>Students Completed in Academic Year 20-21</th>
+					<th>Average Annual Tuition & Required Fee Cost</th>
+				</tr>
+			</table>
 		</div>
 		<div id='main'>
 			<table id='occupational_changes' border = '1'>
@@ -58,48 +70,153 @@
 		    return false;
 		};
 
-		 	fetch('data/occupation_changes_with_backgrounds.csv', {
-		      headers : { 
-		        'Content-Type': 'application/json',
-		        'Accept': 'application/json'
-		       }
+		const fetchExternalData = () => {
+		  return Promise.all([
+		    fetch('data/occupation_changes_with_backgrounds.csv'),
+		    fetch('data/ipeds/cip_codes/CIP2020_SOC2018_Crosswalk.csv'),
+		    fetch('data/ipeds/cip_codes/CIPCode2020.csv'),
+		    fetch('data/ipeds/directory_info/hd2021.csv'),
+		    fetch('data/ipeds/completions/c2021_a.csv'),
+		    fetch('data/ipeds/charges_by_program/ic2021_ay.csv'),
+		    fetch('data/ipeds/charges_by_program/ic2021_py.csv'),
+		  ]).then(results => {
+		    return Promise.all(results.map(result => result.text()));
+		  });
+		};
 
-		    })
-		    	.then(response => response.text())
-		 		.then(data => {
-		 			array = CSVToArray(data)
-		 			console.log(array)
-		 			occupation_changes_and_education = arrayToJSON(array)
-		 			console.log(occupation_changes_and_education[0])
-		 			console.log('keys')
-		 			console.log(Object.keys(occupation_changes_and_education[0]))
-		 			header_html = "<tr>"
-		 			Object.keys(occupation_changes_and_education[0]).forEach(e => 
-		 				header_html += "<th>"+e+"</th>"
-		 				);
-		 			header_html += "</tr>"
-		 			$('#occupational_changes').html(header_html)
+		console.log("why not")
+		fetchExternalData()
+		  .then(result => {
 
-		 			table_data = ""
-		 			for(var i=1;i<occupation_changes_and_education.length;i++){
-		 				row_html = "<tr>"
-		 				row = occupation_changes_and_education[i]
-		 				Object.keys(occupation_changes_and_education[0]).forEach(e => 
-		 					row_html += "<td>"+row[e]+"</td>"
-		 				);
-		 				
-					    row_html += "</tr>"
-					    table_data += row_html
-				  }
-				  	$('#occupational_changes tr:last').after(table_data)
+		  	//get uploaded files
+		    occupation_changes_and_education_csv = result[0]
+		    cip_soc_csv = result[1]
+		    cip_csv = result[2]
+		    directory_info_csv = result[3]
+		    completions_csv = result[4]
+		    academic_year_program_charges_csv = result[5]
+		    academic_year_program_charges_csv = result[6]
 
-				  	var occupation_code = getUrlParameter('occupation');
-				  	var occupation = $.grep(occupation_changes_and_education, function (item) {
-					    return item['2019 National Employment Matrix code'] == occupation_code;
-					});
-				  	$('#occupation_selected').html(occupation[0]['2019 National Employment Matrix title'])
-		 			console.log("Done")
-		 		})
+
+		    //process uploaded files
+		    array = CSVToArray(occupation_changes_and_education_csv)
+ 			occupation_changes_and_education = arrayToJSON(array)
+
+ 			cip_soc_array = CSVToArray(cip_soc_csv)
+ 			cip_soc_json = arrayToJSON(cip_soc_array)
+
+
+ 			cip_array = CSVToArray(cip_csv)
+ 			cip_json = arrayToJSON(cip_array)
+
+
+ 			//process institution data
+ 			completions_array = CSVToArray(completions_csv)
+ 			completions_json = arrayToJSON(completions_array)
+
+ 			directory_info_array = CSVToArray(directory_info_csv)
+ 			directory_info_json = arrayToJSON(directory_info_array)
+
+ 		// 	const completionWithDirectoryInfo = completions_json.map( companyA => {
+			//     const matched = directory_info_json.find(companyB => companyB.UNITID === companyA.UNITID)
+			//     if(matched) {
+			//       return {...companyA, ...matched}
+			//     } else {
+			//       // return companyA element or customize it with your case
+			//     }
+			//   }
+			// )
+			var institution_map = {};
+			directory_info_json.forEach(function(institution) {institution_map[institution.UNITID] = institution;});
+
+			completions_json.forEach(function(completion) {
+				completion.institution = institution_map[completion.UNITID]
+			});
+
+ 			//look to see if there is a selected occupation
+ 			var occupation_code = getUrlParameter('occupation');
+ 			if(occupation_code){
+ 				var occupation = $.grep(occupation_changes_and_education, function (item) {
+				    return item['2019 National Employment Matrix code'] == occupation_code;
+				});
+			  	$('#occupation_selected').html(occupation[0]['2019 National Employment Matrix title'])
+
+			  	//get cip codes for selected occupation
+			  	var cip_code_rows = $.grep(cip_soc_json, function (item) {
+				    return item['SOC2018Code'] == occupation_code;
+				});
+
+				var cips = []
+				for(var i=0;i<cip_code_rows.length;i++){
+					cips.push(find_rows_based_on_key_value(cip_json, 'CIPCode', cip_code_rows[i]['CIP2020Code'])[0])
+				}
+
+				cips.forEach(e =>
+					$('#programs_for_occupation').append('<li>'+e['CIPTitle']+" "+e['CIPDefinition']+'</li>')
+				)
+
+ 			}
+
+			//look to see if there is a selected program
+ 			var cip_code = getUrlParameter('program');
+ 			if(cip_code){
+ 				var program = $.grep(cip_json, function (item) {
+				    return item['CIPCode'] == cip_code;
+				});
+		  		$('#program_selected').html(program[0]['CIPTitle'])
+
+				var institutions = []
+				console.log("INSTITUTION")
+				console.log(completions_json[0])
+				bob = completions_json[0]
+				// for(var i=0;i<completions_json.length;i++){
+				// 	institutions.push()
+				// }
+
+				find_rows_based_on_key_value(completions_json, 'CIPCODE', cip_code).forEach(e =>
+					$('#institutions tr:last').after('<tr><td>' + e['institution']['INSTNM'] +
+						'</td> <td>' + e['institution']['STABBR'] + '</td> <td>' + e['CTOTALT'] + " " + ipeds_award_level(e['AWLEVEL']) + '</td> <td></td></tr>')
+				)
+
+ 			}
+
+ 			header_html = "<tr>"
+ 			Object.keys(occupation_changes_and_education[0]).forEach(e => 
+ 				header_html += "<th>"+e+"</th>"
+ 			);
+ 			header_html += "</tr>"
+ 			$('#occupational_changes').html(header_html)
+
+ 			table_data = ""
+ 			for(var i=1;i<occupation_changes_and_education.length;i++){
+ 				row_html = "<tr>"
+ 				row = occupation_changes_and_education[i]
+ 				Object.keys(occupation_changes_and_education[0]).forEach(e => 
+ 					row_html += "<td>"+row[e]+"</td>"
+ 				);
+ 				
+			    row_html += "</tr>"
+			    table_data += row_html
+		  }
+		  	$('#occupational_changes tr:last').after(table_data)
+
+		  	
+
+
+ 			console.log("Done")
+
+		  })
+		  .catch(console.error);
+		console.log("really")
+
+	function find_rows_based_on_key_value(data, key, value){
+		// console.log(value)
+		var rows = $.grep(data, function (item) {
+			    return item[key] == value;
+			});
+		// console.log(data)
+		return rows
+	}
 
     // ref: http://stackoverflow.com/a/1293163/2343
     // This will parse a delimited string into an array of
@@ -207,6 +324,34 @@
 
 		  //return result; //JavaScript object
 		  return (result); //JSON
+    }
+
+    function ipeds_award_level(number){
+    	if(number == '03'){
+    		return "Associate's Degrees"
+    	}else if(number == '05'){
+    		return "Bachelor's Degrees"
+    	}else if(number == '07'){
+    		return "Master's Degrees"
+    	}else if(number == '17'){
+    		return "Doctor's Degrees - Research"
+    	}else if(number == '18'){
+    		return "Doctor's Degrees - Professional"
+    	}else if(number == '19'){
+    		return "Doctor's Degrees - Other"
+    	}else if(number == '20'){
+    		return "Certificates less than 12 weeks"
+    	}else if(number == '21'){
+    		return 'Certificates 12 weeks to 1 year'
+    	}else if(number == '02'){
+    		return 'Certificates 1 year to 2 year'
+    	}else if(number == '04'){
+    		return 'Certificates 2 year to 4 year'
+    	}else if(number == '06'){
+    		return 'Postbaccalaureate certificates'
+    	}else if(number == '08'){
+    		return "Post-master's certificates"
+    	}
     }
 
 		 </script>
