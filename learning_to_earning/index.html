@@ -75,8 +75,7 @@
 		    fetch('data/occupation_changes_with_backgrounds.csv'),
 		    fetch('data/ipeds/cip_codes/CIP2020_SOC2018_Crosswalk.csv'),
 		    fetch('data/ipeds/cip_codes/CIPCode2020.csv'),
-		    fetch('data/ipeds/directory_info/hd2021.csv'),
-		    fetch('data/ipeds/completions/c2021_a.csv'),
+		    fetch('data/ipeds/iped_merged_data_file.csv'),
 		    fetch('data/ipeds/charges_by_program/ic2021_ay.csv'),
 		    fetch('data/ipeds/charges_by_program/ic2021_py.csv'),
 		  ]).then(results => {
@@ -92,10 +91,9 @@
 		    occupation_changes_and_education_csv = result[0]
 		    cip_soc_csv = result[1]
 		    cip_csv = result[2]
-		    directory_info_csv = result[3]
-		    completions_csv = result[4]
+		    merged_completion_data = result[3]
+		    academic_year_program_charges_csv = result[4]
 		    academic_year_program_charges_csv = result[5]
-		    academic_year_program_charges_csv = result[6]
 
 
 		    //process uploaded files
@@ -111,27 +109,8 @@
 
 
  			//process institution data
- 			completions_array = CSVToArray(completions_csv)
+ 			completions_array = CSVToArray(merged_completion_data)
  			completions_json = arrayToJSON(completions_array)
-
- 			directory_info_array = CSVToArray(directory_info_csv)
- 			directory_info_json = arrayToJSON(directory_info_array)
-
- 		// 	const completionWithDirectoryInfo = completions_json.map( companyA => {
-			//     const matched = directory_info_json.find(companyB => companyB.UNITID === companyA.UNITID)
-			//     if(matched) {
-			//       return {...companyA, ...matched}
-			//     } else {
-			//       // return companyA element or customize it with your case
-			//     }
-			//   }
-			// )
-			var institution_map = {};
-			directory_info_json.forEach(function(institution) {institution_map[institution.UNITID] = institution;});
-
-			completions_json.forEach(function(completion) {
-				completion.institution = institution_map[completion.UNITID]
-			});
 
  			//look to see if there is a selected occupation
  			var occupation_code = getUrlParameter('occupation');
@@ -152,7 +131,7 @@
 				}
 
 				cips.forEach(e =>
-					$('#programs_for_occupation').append('<li>'+e['CIPTitle']+" "+e['CIPDefinition']+'</li>')
+					$('#programs_for_occupation').append("<li><a href='?occupation="+occupation_code+"&program="+e['CIPCode']+"'>"+e['CIPTitle']+"</a> "+e['CIPDefinition']+'</li>')
 				)
 
  			}
@@ -167,15 +146,18 @@
 
 				var institutions = []
 				console.log("INSTITUTION")
+				console.log("CIP " + parseFloat(cip_code))
 				console.log(completions_json[0])
 				bob = completions_json[0]
 				// for(var i=0;i<completions_json.length;i++){
 				// 	institutions.push()
 				// }
 
+
+				console.log(find_rows_based_on_key_value(completions_json, 'CIPCODE', cip_code).length)
 				find_rows_based_on_key_value(completions_json, 'CIPCODE', cip_code).forEach(e =>
-					$('#institutions tr:last').after('<tr><td>' + e['institution']['INSTNM'] +
-						'</td> <td>' + e['institution']['STABBR'] + '</td> <td>' + e['CTOTALT'] + " " + ipeds_award_level(e['AWLEVEL']) + '</td> <td></td></tr>')
+					$('#institutions tr:last').after('<tr><td>' + e['INSTNM'] +
+						'</td> <td>' + e['STABBR'] + '</td> <td>' + e['CTOTALT'] + " " + ipeds_award_level(e['AWLEVEL']) + '</td> <td></td></tr>')
 				)
 
  			}
@@ -212,6 +194,7 @@
 	function find_rows_based_on_key_value(data, key, value){
 		// console.log(value)
 		var rows = $.grep(data, function (item) {
+				console.log(item[key] + " vs " + value + " " + item[key] == value)
 			    return item[key] == value;
 			});
 		// console.log(data)
@@ -327,29 +310,29 @@
     }
 
     function ipeds_award_level(number){
-    	if(number == '03'){
+    	if(number == 3){
     		return "Associate's Degrees"
-    	}else if(number == '05'){
+    	}else if(number == 5){
     		return "Bachelor's Degrees"
-    	}else if(number == '07'){
+    	}else if(number == 7){
     		return "Master's Degrees"
-    	}else if(number == '17'){
+    	}else if(number == 17){
     		return "Doctor's Degrees - Research"
-    	}else if(number == '18'){
+    	}else if(number == 18){
     		return "Doctor's Degrees - Professional"
-    	}else if(number == '19'){
+    	}else if(number == 19){
     		return "Doctor's Degrees - Other"
-    	}else if(number == '20'){
+    	}else if(number == 20){
     		return "Certificates less than 12 weeks"
-    	}else if(number == '21'){
+    	}else if(number == 21){
     		return 'Certificates 12 weeks to 1 year'
-    	}else if(number == '02'){
+    	}else if(number == 2){
     		return 'Certificates 1 year to 2 year'
-    	}else if(number == '04'){
+    	}else if(number == 4){
     		return 'Certificates 2 year to 4 year'
-    	}else if(number == '06'){
+    	}else if(number == 6){
     		return 'Postbaccalaureate certificates'
-    	}else if(number == '08'){
+    	}else if(number == 8){
     		return "Post-master's certificates"
     	}
     }
