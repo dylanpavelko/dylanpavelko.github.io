@@ -18,6 +18,77 @@
 				color: #777777;
 				padding:  0.5em;
 			}
+
+			.top_box{
+				float: left;
+  				width: 33.33%;
+  				color:  white;
+  				height:  4em;
+			}
+			#occupation_top_box {
+				background-color: blue;
+			}
+			#program_top_box {
+				background-color: green;
+			}
+			#institution_top_box {
+				background-color: red;
+			}
+
+			#overlay_message{
+				position: absolute;
+				left:  47%;
+				top:  62%;
+				color:  white;
+			}
+
+			.spinner {
+			   position: absolute;
+			   left: 50%;
+			   top: 50%;
+			   height:60px;
+			   width:60px;
+			   margin:0px auto;
+			   -webkit-animation: rotation .6s infinite linear;
+			   -moz-animation: rotation .6s infinite linear;
+			   -o-animation: rotation .6s infinite linear;
+			   animation: rotation .6s infinite linear;
+			   border-left:6px solid rgba(0,174,239,.15);
+			   border-right:6px solid rgba(0,174,239,.15);
+			   border-bottom:6px solid rgba(0,174,239,.15);
+			   border-top:6px solid rgba(0,174,239,.8);
+			   border-radius:100%;
+			}
+
+			@-webkit-keyframes rotation {
+			   from {-webkit-transform: rotate(0deg);}
+			   to {-webkit-transform: rotate(359deg);}
+			}
+			@-moz-keyframes rotation {
+			   from {-moz-transform: rotate(0deg);}
+			   to {-moz-transform: rotate(359deg);}
+			}
+			@-o-keyframes rotation {
+			   from {-o-transform: rotate(0deg);}
+			   to {-o-transform: rotate(359deg);}
+			}
+			@keyframes rotation {
+			   from {transform: rotate(0deg);}
+			   to {transform: rotate(359deg);}
+			}
+
+			.overlay {
+		      height: 100%;
+		      width: 100%;
+		      position: fixed;
+		      z-index: 1;
+		      top: 0;
+		      left: 0;
+		      background-color: rgb(0, 0, 0);
+		      background-color: rgba(0, 0, 0, 0.6);
+		      overflow-x: hidden;
+		      transition: 0.5s;
+		    }
 		</style>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.3/jquery.csv.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -26,6 +97,19 @@
 	<body>
 		<div class='disclaimer'>
 			This information was created for my own personal analysis and should not be mistaken for professional financial advice.
+		</div>
+		<div>
+			<div id='occupation_top_box' class='top_box'>
+				<p><strong>Occupation Selected:</strong> <span id='occupation_selected'></span><br/>
+					<strong>State:</strong>
+				</p>
+			</div>
+			<div id='program_top_box' class='top_box'>
+				<p><strong>Program Selected:</strong> <span id='program_selected'></span></p>
+			</div>
+			<div id='institution_top_box' class='top_box'>
+				<p><strong>Institution:</strong> <span id='inst_options'></span> Options</p>
+			</div>
 		</div>
 		<div>
 			<ul>
@@ -52,7 +136,21 @@
 				<tr><td>Loading</td></tr>
 			</table>
 		</div>
+
+
+		<div id='loading_splash' class='overlay'>
+			<div class="spinner"></div>
+			<div id='overlay_message'>
+				<div id='loading_insitutions'>
+					Loading&nbsp;Institution&nbsp;Data
+				</div>
+			</div>
+		</div>	
+
 		 <script type='text/javascript'>
+		 	var loading_institutions = true;
+		 	var loading_occupations = true;
+		 	var loading_programs = true;
 
 		 	var getUrlParameter = function getUrlParameter(sParam) {
 		    var sPageURL = window.location.search.substring(1),
@@ -83,9 +181,20 @@
 		  });
 		};
 
-		console.log("why not")
+		$('body').on('click', '.program_link', function(){
+			event.preventDefault();
+			var cip_code = $(this).attr('cip')
+			update_selected_program(cip_code)
+		})
+
+		var completions_json
+
 		fetchExternalData()
 		  .then(result => {
+		  	loading_programs = false;
+		  	loading_occupations = false;
+		  	loading_institutions = false;
+		  	$('#loading_splash').css('visibility', 'hidden');
 
 		  	//get uploaded files
 		    occupation_changes_and_education_csv = result[0]
@@ -131,35 +240,16 @@
 				}
 
 				cips.forEach(e =>
-					$('#programs_for_occupation').append("<li><a href='?occupation="+occupation_code+"&program="+e['CIPCode']+"'>"+e['CIPTitle']+"</a> "+e['CIPDefinition']+'</li>')
+					$('#programs_for_occupation').append("<li><a class='program_link' cip='"+e['CIPCode']+"' href='?occupation="+occupation_code+"&program="+e['CIPCode']+"'>"+e['CIPTitle']+"</a> "+e['CIPDefinition']+'</li>')
 				)
 
  			}
 
 			//look to see if there is a selected program
  			var cip_code = getUrlParameter('program');
+
  			if(cip_code){
- 				var program = $.grep(cip_json, function (item) {
-				    return item['CIPCode'] == cip_code;
-				});
-		  		$('#program_selected').html(program[0]['CIPTitle'])
-
-				var institutions = []
-				console.log("INSTITUTION")
-				console.log("CIP " + parseFloat(cip_code))
-				console.log(completions_json[0])
-				bob = completions_json[0]
-				// for(var i=0;i<completions_json.length;i++){
-				// 	institutions.push()
-				// }
-
-
-				console.log(find_rows_based_on_key_value(completions_json, 'CIPCODE', cip_code).length)
-				find_rows_based_on_key_value(completions_json, 'CIPCODE', cip_code).forEach(e =>
-					$('#institutions tr:last').after('<tr><td>' + e['INSTNM'] +
-						'</td> <td>' + e['STABBR'] + '</td> <td>' + e['CTOTALT'] + " " + ipeds_award_level(e['AWLEVEL']) + '</td> <td></td></tr>')
-				)
-
+ 				update_selected_program(cip_code)
  			}
 
  			header_html = "<tr>"
@@ -173,9 +263,24 @@
  			for(var i=1;i<occupation_changes_and_education.length;i++){
  				row_html = "<tr>"
  				row = occupation_changes_and_education[i]
- 				Object.keys(occupation_changes_and_education[0]).forEach(e => 
- 					row_html += "<td>"+row[e]+"</td>"
- 				);
+ 				if(row['Occupation type']=="Line item"){
+ 					row_html += "<td><a href='?occupation="+row['2019 National Employment Matrix code']+"'>"+row['2019 National Employment Matrix title']+"</td>"
+ 				}else{
+					row_html += "<td>"+row['2019 National Employment Matrix title']+"</td>"
+ 				}
+ 			
+ 				row_html += "<td>"+row['2019 National Employment Matrix code']+"</td>"
+ 				row_html += "<td>"+row['Occupation type']+"</td>"
+ 				row_html += "<td>"+row['2019 Employment (thousands)']+"</td>"
+ 				row_html += "<td>"+row['2029 Employment Projection (thousands)']+"</td>"
+ 				row_html += "<td>"+row['Employment change (thouands), 2019-29']+"</td>"
+ 				row_html += "<td>"+row['Employment change percent, 2019-29']+"</td>"
+ 				row_html += "<td>"+row['Percent self employed, 2019']+"</td>"
+ 				row_html += "<td>"+row['Occupational openings, 2019-29 annual average']+"</td>"
+ 				row_html += "<td>"+row['Median annual wage, 2019(1)']+"</td>"
+ 				row_html += "<td>"+row['Typical education needed for entry']+"</td>"
+ 				row_html += "<td>"+row['Work experience in a related occupation']+"</td>"
+ 				row_html += "<td>"+row['Typical on-the-job training needed to attain competency in the occupation']+"</td>"
  				
 			    row_html += "</tr>"
 			    table_data += row_html
@@ -194,7 +299,7 @@
 	function find_rows_based_on_key_value(data, key, value){
 		// console.log(value)
 		var rows = $.grep(data, function (item) {
-				console.log(item[key] + " vs " + value + " " + item[key] == value)
+	//			console.log(item[key] + " vs " + value + " " + item[key] == value)
 			    return item[key] == value;
 			});
 		// console.log(data)
@@ -304,8 +409,6 @@
 		      result.push(obj);
 
 		  }
-
-		  //return result; //JavaScript object
 		  return (result); //JSON
     }
 
@@ -323,18 +426,45 @@
     	}else if(number == 19){
     		return "Doctor's Degrees - Other"
     	}else if(number == 20){
-    		return "Certificates less than 12 weeks"
+    		return "Less than 12 week Certificates"
     	}else if(number == 21){
-    		return 'Certificates 12 weeks to 1 year'
+    		return '12 week - 1 Year Certificates 12'
     	}else if(number == 2){
-    		return 'Certificates 1 year to 2 year'
+    		return '1-2 Year Certificates'
     	}else if(number == 4){
-    		return 'Certificates 2 year to 4 year'
+    		return '2-4 Year Certificates'
     	}else if(number == 6){
     		return 'Postbaccalaureate certificates'
     	}else if(number == 8){
     		return "Post-master's certificates"
     	}
+    }
+
+    function unique_institution_count(filtered_completions){
+    	unitids = []
+    	filtered_completions.forEach( e=> {
+    		if(!unitids.includes(e['UNITID'])){
+    			unitids.push(e['UNITID'])
+    		}
+    	})
+    	return unitids.length
+    }
+
+    function update_selected_program(cip_code){
+ 		var program = $.grep(cip_json, function (item) {
+		    return item['CIPCode'] == cip_code;
+		});
+  		$('#program_selected').html(program[0]['CIPTitle'])
+
+		var institutions = []
+		$("#institutions").find("tr:gt(0)").remove();
+
+		filtered_completions = find_rows_based_on_key_value(completions_json, 'CIPCODE', cip_code)
+		filtered_completions.forEach(e =>
+			$('#institutions tr:last').after('<tr><td>' + e['INSTNM'] +
+				'</td> <td>' + e['STABBR'] + '</td> <td>' + e['CTOTALT'] + " " + ipeds_award_level(e['AWLEVEL']) + '</td> <td></td></tr>')
+		)
+		$('#inst_options').html(unique_institution_count(filtered_completions))
     }
 
 		 </script>
