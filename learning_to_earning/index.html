@@ -73,6 +73,11 @@
 				top:  62%;
 				color:  white;
 			}
+			.header {
+            	position: sticky;
+            	top:0;
+            	background-color: white;
+        	}
 
 			.spinner {
 			   position: absolute;
@@ -145,15 +150,26 @@
 				<p><strong>Institution:</strong> <span id='inst_options'></span> Options</p>
 			</div>
 		</div>
-		<div>
-			<ul>
-				<li><a href='https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx'>IPEDS Data (Instituional Characteristics, Completions)</a></li>
-			</ul>
-		</div>
+
 		<div id='occupations_pane'>
-			<button onclick="clear_occupation()" class="btn btn-secondary">Clear Selection (See All Occupatoins)</button>
+			<div id='ocupation_details' style='display: none;'>
+				<p>
+					<br/>
+					<button onclick="clear_occupation()" class="btn btn-secondary">Clear Selection (See All Occupations)</button>
+				</p>
+				<p>
+					<span id='occupation_detail_text'></span>
+				</p>
+			</div>
+			
 			<div id='occupation_options'>
+				<p>
+					<br/>
+					<input class="form-control" id="occupation_search" type="text" placeholder="Search for Occupation..">
+				</p>
 				<table id='occupational_changes' class='table table-striped table-hover'>
+					<thead class='header'>
+					</thead>
 					<tbody>
 						<tr><td>Loading</td></tr>
 					</tbody>
@@ -161,20 +177,24 @@
 			</div>
 		</div>
 		<div id='programs_pane'>
-			<div class='text_pane'>
-				<span id='program_details'></span> 
+			<div id='program_details' class='text_pane'>
 				<br/>
 				<button onclick="clear_program()" class="btn btn-secondary">Clear Selection (See All Programs for Occupatoin)</button>
+				<br/><br/>
+				<p>
+					<span id='program_detail_text'></span> 
+				</p>
 			</div>
 			<div id='program_options' class='text_pane'>
-			<ul id='programs_for_occupation'>
-				<lh><strong>Relevant Programs</strong></lh>
-			</ul>
+				<br/>
+				<ul id='programs_for_occupation'>
+					<lh><strong>Relevant Programs</strong></lh>
+				</ul>
 			</div>
 		</div>
 		<div id='instiutions_pane'>
 			<table id='institutions' border='1' class="table table-striped table-hover">
-				<thead>
+				<thead class='header'>
 					<tr>
 						<th>Institution</th>
 						<th>State</th>
@@ -196,6 +216,14 @@
 				</div>
 			</div>
 		</div>	
+<!-- 		<div>
+			Sources
+			<div>
+			<ul>
+				<li><a href='https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx'>IPEDS Data (Instituional Characteristics, Completions)</a></li>
+			</ul>
+		</div> -->
+		</div>
 
 		 <script type='text/javascript'>
 		 	var loading_institutions = true;
@@ -290,14 +318,13 @@
  				update_selected_program(cip_code)
  			}
 
- 			header_html = "<tr>"
+ 			header_html = ""
  			Object.keys(occupation_changes_and_education[0]).forEach(e => 
  				header_html += "<th>"+e+"</th>"
  			);
- 			header_html += "</tr>"
- 			$('#occupational_changes').html(header_html)
+ 			$('#occupational_changes thead').html(header_html)
 
- 			table_data = "<tbody>"
+ 			table_data = ""
  			for(var i=1;i<occupation_changes_and_education.length;i++){
  				row_html = "<tr>"
  				row = occupation_changes_and_education[i]
@@ -323,7 +350,7 @@
 			    row_html += "</tr>"
 			    table_data += row_html
 		  }
-		  	$('#occupational_changes tr:last').after(table_data+"</tbody>")
+		  	$('#occupational_changes tbody').html(table_data)
 
 		  	
 
@@ -496,16 +523,18 @@
 
 		var institutions = []
 
-
+		$('#institutions tbody').empty();
 		filtered_completions = find_rows_based_on_key_value(completions_json, 'CIPCODE', cip_code)
 		filtered_completions.forEach(e =>
 			$('#institutions tbody').append('<tr><td>' + e['INSTNM'] +
 				'</td> <td>' + e['STABBR'] + '</td> <td>' + e['CTOTALT'] + " " + ipeds_award_level(e['AWLEVEL']) + '</td> <td></td></tr>')
 		)
+
 		$('#inst_options').html(unique_institution_count(filtered_completions))
-		$('#program_details').html(program[0]['CIPTitle'])
+		$('#program_detail_text').html(program[0]['CIPTitle'])
 		$('#programs_for_occupation').hide()
 		$('#instiutions_pane').show()
+		$('#program_details').show()
 		topFunction()
 
     }
@@ -516,7 +545,10 @@
     	var occupation = $.grep(occupation_changes_and_education, function (item) {
 				    return item['2019 National Employment Matrix code'] == occupation_code;
 				});
-			  	$('#occupation_selected').html(occupation[0]['2019 National Employment Matrix title'])
+    	occupation_title = occupation[0]['2019 National Employment Matrix title']
+	  	$('#occupation_selected').html(occupation_title)
+	  	$('#occupation_detail_text').html(occupation_title)
+
 
 	  	//get cip codes for selected occupation
 	  	var cip_code_rows = $.grep(cip_soc_json, function (item) {
@@ -535,14 +567,18 @@
 		)
 		$('#programs_for_occupation').show()
 		$('#programs_pane').show()
+		$('#ocupation_details').show()
+		$('#program_details').hide()
 		topFunction()
 
     }
 
     function clear_program(){
     	$('#program_selected').html("")
-    	$('#program_details').html("")
+    	$('#program_detail_text').html("")
+    	$('#program_details').hide()
     	$('#programs_for_occupation').show()
+    	$('#instiutions_pane').hide()
     }
 
     function clear_occupation(){
@@ -550,6 +586,7 @@
     	$('#instiutions_pane').hide()
     	$('#programs_pane').hide()
     	$('#occupation_options').show()
+		$('#ocupation_details').hide()
 
     }
 
@@ -557,6 +594,15 @@
 	  document.body.scrollTop = 0; // For Safari
 	  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 	}
+
+	$(document).ready(function(){
+	  $("#occupation_search").on("keyup", function() {
+	    var value = $(this).val().toLowerCase();
+	    $("#occupational_changes tr").filter(function() {
+	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	    });
+	  });
+	});
 
 		 </script>
 	</body>
