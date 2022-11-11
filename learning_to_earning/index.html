@@ -11,6 +11,10 @@
 		  gtag('config', 'G-VH8W5FS6K7');
 		</script>
 
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
 		<title>Learning to Earning</title>
 		<style>
 			body {
@@ -44,6 +48,23 @@
 			}
 			#institution_top_box {
 				background-color: red;
+			}
+
+			#occupations_pane {
+				width:  33.33%;
+				float:  left;
+			}
+
+			#programs_pane {
+				width:  33.33%;
+				float:  left;
+				display: none;
+			}
+
+			#instiutions_pane {
+				width:  33.33%;
+				float:  left;
+				display: none;
 			}
 
 			#overlay_message{
@@ -103,9 +124,11 @@
 		</style>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.3/jquery.csv.min.js"></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
 	</head>
 	<body>
+	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 		<div class='disclaimer'>
 			This information was created for my own personal analysis and should not be mistaken for professional financial advice.
 		</div>
@@ -127,27 +150,43 @@
 				<li><a href='https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx'>IPEDS Data (Instituional Characteristics, Completions)</a></li>
 			</ul>
 		</div>
-		<div>
-			<p><strong>Occupation Selected:</strong> <span id='occupation_selected'></span></p>
+		<div id='occupations_pane'>
+			<button onclick="clear_occupation()" class="btn btn-secondary">Clear Selection (See All Occupatoins)</button>
+			<div id='occupation_options'>
+				<table id='occupational_changes' class='table table-striped table-hover'>
+					<tbody>
+						<tr><td>Loading</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id='programs_pane'>
+			<div class='text_pane'>
+				<span id='program_details'></span> 
+				<br/>
+				<button onclick="clear_program()" class="btn btn-secondary">Clear Selection (See All Programs for Occupatoin)</button>
+			</div>
+			<div id='program_options' class='text_pane'>
 			<ul id='programs_for_occupation'>
 				<lh><strong>Relevant Programs</strong></lh>
 			</ul>
-			<p><strong>Program Selected:</strong> <span id='program_selected'></span></p>
-			<table id='institutions' border='1'>
-				<tr>
-					<th>Institution</th>
-					<th>State</th>
-					<th>Students Completed in Academic Year 20-21</th>
-					<th>Average Annual Tuition & Required Fee Cost</th>
-				</tr>
+			</div>
+		</div>
+		<div id='instiutions_pane'>
+			<table id='institutions' border='1' class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>Institution</th>
+						<th>State</th>
+						<th>Students Completed in Academic Year 20-21</th>
+						<th>Average Annual Tuition & Required Fee Cost</th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
 			</table>
 		</div>
-		<div id='main'>
-			<table id='occupational_changes' border = '1'>
-				<tr><td>Loading</td></tr>
-			</table>
-		</div>
-
 
 		<div id='loading_splash' class='overlay'>
 			<div class="spinner"></div>
@@ -198,6 +237,12 @@
 			update_selected_program(cip_code)
 		})
 
+		$('body').on('click', '.occupation_link', function(){
+			event.preventDefault();
+			var soc_code = $(this).attr('soc_code')
+			update_selected_occupation(soc_code)
+		})
+
 		var completions_json
 
 		fetchExternalData()
@@ -235,25 +280,7 @@
  			//look to see if there is a selected occupation
  			var occupation_code = getUrlParameter('occupation');
  			if(occupation_code){
- 				var occupation = $.grep(occupation_changes_and_education, function (item) {
-				    return item['2019 National Employment Matrix code'] == occupation_code;
-				});
-			  	$('#occupation_selected').html(occupation[0]['2019 National Employment Matrix title'])
-
-			  	//get cip codes for selected occupation
-			  	var cip_code_rows = $.grep(cip_soc_json, function (item) {
-				    return item['SOC2018Code'] == occupation_code;
-				});
-
-				var cips = []
-				for(var i=0;i<cip_code_rows.length;i++){
-					cips.push(find_rows_based_on_key_value(cip_json, 'CIPCode', cip_code_rows[i]['CIP2020Code'])[0])
-				}
-
-				cips.forEach(e =>
-					$('#programs_for_occupation').append("<li><a class='program_link' cip='"+e['CIPCode']+"' href='?occupation="+occupation_code+"&program="+e['CIPCode']+"'>"+e['CIPTitle']+"</a> "+e['CIPDefinition']+'</li>')
-				)
-
+ 				update_selected_occupation(occupation_code)
  			}
 
 			//look to see if there is a selected program
@@ -270,12 +297,12 @@
  			header_html += "</tr>"
  			$('#occupational_changes').html(header_html)
 
- 			table_data = ""
+ 			table_data = "<tbody>"
  			for(var i=1;i<occupation_changes_and_education.length;i++){
  				row_html = "<tr>"
  				row = occupation_changes_and_education[i]
  				if(row['Occupation type']=="Line item"){
- 					row_html += "<td><a href='?occupation="+row['2019 National Employment Matrix code']+"'>"+row['2019 National Employment Matrix title']+"</td>"
+ 					row_html += "<td><a class='occupation_link' soc_code='"+row['2019 National Employment Matrix code']+"' href='?occupation="+row['2019 National Employment Matrix code']+"'>"+row['2019 National Employment Matrix title']+"</td>"
  				}else{
 					row_html += "<td>"+row['2019 National Employment Matrix title']+"</td>"
  				}
@@ -296,7 +323,7 @@
 			    row_html += "</tr>"
 			    table_data += row_html
 		  }
-		  	$('#occupational_changes tr:last').after(table_data)
+		  	$('#occupational_changes tr:last').after(table_data+"</tbody>")
 
 		  	
 
@@ -468,17 +495,71 @@
   		$('#program_selected').html(program[0]['CIPTitle'])
 
 		var institutions = []
-		$("#institutions").find("tr:gt(0)").remove();
+
 
 		filtered_completions = find_rows_based_on_key_value(completions_json, 'CIPCODE', cip_code)
 		filtered_completions.forEach(e =>
-			$('#institutions tr:last').after('<tr><td>' + e['INSTNM'] +
+			$('#institutions tbody').append('<tr><td>' + e['INSTNM'] +
 				'</td> <td>' + e['STABBR'] + '</td> <td>' + e['CTOTALT'] + " " + ipeds_award_level(e['AWLEVEL']) + '</td> <td></td></tr>')
 		)
 		$('#inst_options').html(unique_institution_count(filtered_completions))
+		$('#program_details').html(program[0]['CIPTitle'])
+		$('#programs_for_occupation').hide()
+		$('#instiutions_pane').show()
+		topFunction()
+
     }
+
+    function update_selected_occupation(occupation_code){
+    	$('#occupation_options').hide()
+    	clear_program()
+    	var occupation = $.grep(occupation_changes_and_education, function (item) {
+				    return item['2019 National Employment Matrix code'] == occupation_code;
+				});
+			  	$('#occupation_selected').html(occupation[0]['2019 National Employment Matrix title'])
+
+	  	//get cip codes for selected occupation
+	  	var cip_code_rows = $.grep(cip_soc_json, function (item) {
+		    return item['SOC2018Code'] == occupation_code;
+		});
+
+		var cips = []
+		for(var i=0;i<cip_code_rows.length;i++){
+			cips.push(find_rows_based_on_key_value(cip_json, 'CIPCode', cip_code_rows[i]['CIP2020Code'])[0])
+		}
+
+		$('#programs_for_occupation').empty();
+		$('#programs_for_occupation').append("<lh><strong>Relevant Programs</strong></lh>")
+		cips.forEach(e =>
+			$('#programs_for_occupation').append("<li><a class='program_link' cip='"+e['CIPCode']+"' href='?occupation="+occupation_code+"&program="+e['CIPCode']+"'>"+e['CIPTitle']+"</a> "+e['CIPDefinition']+'</li>')
+		)
+		$('#programs_for_occupation').show()
+		$('#programs_pane').show()
+		topFunction()
+
+    }
+
+    function clear_program(){
+    	$('#program_selected').html("")
+    	$('#program_details').html("")
+    	$('#programs_for_occupation').show()
+    }
+
+    function clear_occupation(){
+    	clear_program()
+    	$('#instiutions_pane').hide()
+    	$('#programs_pane').hide()
+    	$('#occupation_options').show()
+
+    }
+
+    function topFunction() {
+	  document.body.scrollTop = 0; // For Safari
+	  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+	}
 
 		 </script>
 	</body>
 	<!-- icons from uxwing.com -->
+	<!-- to develop locally run 'python3 -m http.server' -->
 </html>
