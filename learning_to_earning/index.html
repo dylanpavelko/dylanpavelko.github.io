@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		
@@ -332,9 +333,16 @@
  			$('#occupational_changes thead').html(header_html)
 
  			table_data = ""
+ 			summary_code = ""
  			for(var i=1;i<occupation_changes_and_education.length;i++){
- 				row_html = "<tr>"
  				row = occupation_changes_and_education[i]
+ 				if(row['Occupation type'] == "Line item"){
+ 					row_html = "<tr class='collapse lineitem' id="+summary_code+"'>"
+ 				}else{
+ 					summary_code = row['2019 National Employment Matrix title'].replace(/\s/g, '');
+ 					row_html = "<tr data-bs-toggle='collapse' data-bs-target='#"+summary_code+"' class='clickable'>"
+ 				}
+ 				
  				if(row['Occupation type']=="Line item"){
  					row_html += "<td><a class='occupation_link' soc_code='"+row['2019 National Employment Matrix code']+"' href='?occupation="+row['2019 National Employment Matrix code']+"'>"+row['2019 National Employment Matrix title']+"</td>"
  				}else{
