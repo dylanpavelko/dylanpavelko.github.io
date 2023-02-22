@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <body>
+     {{ content }}
+
+    <div id='menu' style='text-align: center;'>
+     {% for d in site.data.dishes %}
+     <p>
+     	{% assign dish = d[1] %}
+     	<span style="font-size: 2em;"> {{ dish.name }}</span><br/>
+     	{% for local in dish.local-names %}
+     		{% if page.language == local.language %}
+     			{% assign words = local.translation | split: ', ' %}
+     			
+     			{% if page.language == "Thai" %}
+     				{% assign thai_words = "" | split: ',' %}
+	     			{% for word in words %}
+	     				{% assign translation = site.data.thai_translations[word] %}
+	     				{% assign thai_words = thai_words | push: translation %}
+	     			{% endfor %}
+	     			<span style="font-size: 1.5em;">
+	     			{%- for translation in thai_words -%}
+	     				{{ translation.word }}
+	     			{%- endfor -%}
+	     			</span>
+	     			<br/>
+	     			<em>pronounced:</em>
+	     			{% for translation in thai_words %}
+	     				{{ translation.sound }}
+	     			{% endfor %}
+	     			<br/>
+	     			<em>meaning:</em>
+	     			{% for translation in thai_words %}
+	     				{{ translation.meaning }}
+	     			{% endfor %}
+     			{% endif %}
+     			
+     		{% endif %}
+		
+     	{% endfor %}
+     	</p>
+     {% endfor %}
+ 	</div>
+  </body>
+</html>

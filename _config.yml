@@ -1,0 +1,5 @@
+name: My Jekyll Website
+
+collections:
+  menus:
+    output: true

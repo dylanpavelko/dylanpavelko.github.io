@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-VH8W5FS6K7"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-VH8W5FS6K7');
+		</script>
+
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+		<title>Learning to Earning</title>
+		<style>
+			body {
+				padding:  0;
+				margin:  0;
+				background-color: #DEDEDE;
+			}
+
+			#main{
+				margin:  1em;
+			}
+
+			.disclaimer {
+				text-align: center;
+				background-color: #f1f1f1;
+				color: #777777;
+				padding:  0.5em;
+			}
+
+			.top_box{
+				float: left;
+  				width: 33.33%;
+  				color:  white;
+  				height:  4em;
+			}
+			#occupation_top_box {
+				background-color: blue;
+			}
+			#program_top_box {
+				background-color: green;
+			}
+			#institution_top_box {
+				background-color: red;
+			}
+
+			#occupations_pane {
+				width:  33.33%;
+				float:  left;
+			}
+
+			#programs_pane {
+				width:  33.33%;
+				float:  left;
+				display: none;
+			}
+
+			#instiutions_pane {
+				width:  33.33%;
+				float:  left;
+				display: none;
+			}
+
+			#overlay_message{
+				position: absolute;
+				left:  47%;
+				top:  62%;
+				color:  white;
+			}
+			.header {
+            	position: sticky;
+            	top:0;
+            	background-color: white;
+        	}
+
+			.spinner {
+			   position: absolute;
+			   left: 50%;
+			   top: 50%;
+			   height:60px;
+			   width:60px;
+			   margin:0px auto;
+			   -webkit-animation: rotation .6s infinite linear;
+			   -moz-animation: rotation .6s infinite linear;
+			   -o-animation: rotation .6s infinite linear;
+			   animation: rotation .6s infinite linear;
+			   border-left:6px solid rgba(0,174,239,.15);
+			   border-right:6px solid rgba(0,174,239,.15);
+			   border-bottom:6px solid rgba(0,174,239,.15);
+			   border-top:6px solid rgba(0,174,239,.8);
+			   border-radius:100%;
+			}
+
+			@-webkit-keyframes rotation {
+			   from {-webkit-transform: rotate(0deg);}
+			   to {-webkit-transform: rotate(359deg);}
+			}
+			@-moz-keyframes rotation {
+			   from {-moz-transform: rotate(0deg);}
+			   to {-moz-transform: rotate(359deg);}
+			}
+			@-o-keyframes rotation {
+			   from {-o-transform: rotate(0deg);}
+			   to {-o-transform: rotate(359deg);}
+			}
+			@keyframes rotation {
+			   from {transform: rotate(0deg);}
+			   to {transform: rotate(359deg);}
+			}
+
+			.overlay {
+		      height: 100%;
+		      width: 100%;
+		      position: fixed;
+		      z-index: 1;
+		      top: 0;
+		      left: 0;
+		      background-color: rgb(0, 0, 0);
+		      background-color: rgba(0, 0, 0, 0.6);
+		      overflow-x: hidden;
+		      transition: 0.5s;
+		    }
+		</style>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.3/jquery.csv.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+	</head>
+	<body>
+	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+		<div class='disclaimer'>
+			This information was created for my own personal analysis and should not be mistaken for professional financial advice.
+		</div>
+		<div>
+			<div id='occupation_top_box' class='top_box'>
+				<p><strong>Occupation Selected:</strong> <span id='occupation_selected'></span><br/>
+					<strong>State:</strong>
+				</p>
+			</div>
+			<div id='program_top_box' class='top_box'>
+				<p><strong>Program Selected:</strong> <span id='program_selected'></span></p>
+			</div>
+			<div id='institution_top_box' class='top_box'>
+				<p><strong>Institution:</strong> <span id='inst_options'></span> Options</p>
+			</div>
+		</div>
+
+		<div id='occupations_pane'>
+			<div id='ocupation_details' style='display: none;'>
+				<p>
+					<br/>
+					<button onclick="clear_occupation()" class="btn btn-secondary">Clear Selection (See All Occupations)</button>
+				</p>
+				<p>
+					<span id='occupation_detail_text'></span>
+				</p>
+			</div>
+			
+			<div id='occupation_options'>
+				<p>
+					<br/>
+					<input class="form-control" id="occupation_search" type="text" placeholder="Search for Occupation...">
+				</p>
+				<table id='occupational_changes' class='table table-striped table-hover'>
+					<thead class='header'>
+					</thead>
+					<tbody>
+						<tr><td>Loading</td></tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div id='programs_pane'>
+			<div id='program_details' class='text_pane'>
+				<br/>
+				<button onclick="clear_program()" class="btn btn-secondary">Clear Selection (See All Programs for Occupation)</button>
+				<br/><br/>
+				<p>
+					<span id='program_detail_text'></span> 
+				</p>
+			</div>
+			<div id='program_options' class='text_pane'>
+				<br/>
+				<ul id='programs_for_occupation'>
+					<lh><strong>Relevant Programs</strong></lh>
+				</ul>
+			</div>
+		</div>
+		<div id='instiutions_pane'>
+			<br/>
+			<input class="form-control" id="institution_search" type="text" placeholder="Search for an Instiution by Name...">
+			<select id='states' class="form-select" aria-label="Filter by state">
+			  <option value='-1' selected>All States</option>
+			</select>
+			<select id='program_types' class="form-select" aria-label="Filter by program type">
+			  <option value='-1' selected>All Program Types</option>
+			</select>
+			<table id='institutions' class="table table-striped table-hover">
+				<thead class='header'>
+					<th>Institution</th>
+					<th>State</th>
+					<th>Students Completed in Academic Year 20-21</th>
+					<th>Average Annual In-Residence Undergraduate Full-Time Tuition & Required Fees (2021-2022)</th>
+				</thead>
+				<tbody>
+					<tr>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div id='loading_splash' class='overlay'>
+			<div class="spinner"></div>
+			<div id='overlay_message'>
+				<div id='loading_insitutions'>
+					Loading&nbsp;Data
+				</div>
+			</div>
+		</div>	
+<!-- 		<div>
+			Sources
+			<div>
+			<ul>
+				<li><a href='https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx'>IPEDS Data (Instituional Characteristics, Completions)</a></li>
+			</ul>
+		</div> -->
+		</div>
+
+		 <script type='text/javascript'>
+		 	var loading_institutions = true;
+		 	var loading_occupations = true;
+		 	var loading_programs = true;
+
+		 	var getUrlParameter = function getUrlParameter(sParam) {
+		    var sPageURL = window.location.search.substring(1),
+		        sURLVariables = sPageURL.split('&'),
+		        sParameterName,
+		        i;
+
+		    for (i = 0; i < sURLVariables.length; i++) {
+		        sParameterName = sURLVariables[i].split('=');
+
+		        if (sParameterName[0] === sParam) {
+		            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+		        }
+		    }
+		    return false;
+		};
+
+		const fetchExternalData = () => {
+		  return Promise.all([
+		    fetch('data/occupation_changes_with_backgrounds.csv'),
+		    fetch('data/ipeds/cip_codes/CIP2020_SOC2018_Crosswalk.csv'),
+		    fetch('data/ipeds/cip_codes/CIPCode2020.csv'),
+		    fetch('data/ipeds/iped_merged_data_file.csv'),
+		    fetch('data/ipeds/charges_by_program/ic2021_ay.csv'),
+		    fetch('data/ipeds/charges_by_program/ic2021_py.csv'),
+		  ]).then(results => {
+		    return Promise.all(results.map(result => result.text()));
+		  });
+		};
+
+		$('body').on('click', '.program_link', function(){
+			event.preventDefault();
+			var cip_code = $(this).attr('cip')
+			update_selected_program(cip_code)
+		})
+
+		$('body').on('click', '.occupation_link', function(){
+			event.preventDefault();
+			var soc_code = $(this).attr('soc_code')
+			update_selected_occupation(soc_code)
+		})
+
+		var completions_json
+
+		fetchExternalData()
+		  .then(result => {
+		  	loading_programs = false;
+		  	loading_occupations = false;
+		  	loading_institutions = false;
+		  	$('#loading_splash').css('visibility', 'hidden');
+
+		  	//get uploaded files
+		    occupation_changes_and_education_csv = result[0]
+		    cip_soc_csv = result[1]
+		    cip_csv = result[2]
+		    merged_completion_data = result[3]
+		    academic_year_program_charges_csv = result[4]
+		    academic_year_program_charges_csv = result[5]
+
+
+		    //process uploaded files
+		    array = CSVToArray(occupation_changes_and_education_csv)
+ 			occupation_changes_and_education = arrayToJSON(array)
+
+ 			cip_soc_array = CSVToArray(cip_soc_csv)
+ 			cip_soc_json = arrayToJSON(cip_soc_array)
+
+
+ 			cip_array = CSVToArray(cip_csv)
+ 			cip_json = arrayToJSON(cip_array)
+
+
+ 			//process institution data
+ 			completions_array = CSVToArray(merged_completion_data)
+ 			completions_json = arrayToJSON(completions_array)
+
+ 			//look to see if there is a selected occupation
+ 			var occupation_code = getUrlParameter('occupation');
+ 			if(occupation_code){
+ 				update_selected_occupation(occupation_code)
+ 			}
+
+			//look to see if there is a selected program
+ 			var cip_code = getUrlParameter('program');
+
+ 			if(cip_code){
+ 				update_selected_program(cip_code)
+ 			}
+
+ 			header_html = ""
+ 			Object.keys(occupation_changes_and_education[0]).forEach(e => 
+ 				header_html += "<th>"+e+"</th>"
+ 			);
+ 			$('#occupational_changes thead').html(header_html)
+
+ 			table_data = ""
+ 			summary_code = ""
+ 			for(var i=1;i<occupation_changes_and_education.length;i++){
+ 				row = occupation_changes_and_education[i]
+ 				if(row['Occupation type'] == "Line item"){
+ 					row_html = "<tr class='collapse lineitem' id="+summary_code+"'>"
+ 				}else{
+ 					summary_code = row['2019 National Employment Matrix title'].replace(/\s/g, '');
+ 					row_html = "<tr data-bs-toggle='collapse' data-bs-target='#"+summary_code+"' class='clickable'>"
+ 				}
+ 				
+ 				if(row['Occupation type']=="Line item"){
+ 					row_html += "<td><a class='occupation_link' soc_code='"+row['2019 National Employment Matrix code']+"' href='?occupation="+row['2019 National Employment Matrix code']+"'>"+row['2019 National Employment Matrix title']+"</td>"
+ 				}else{
+					row_html += "<td>"+row['2019 National Employment Matrix title']+"</td>"
+ 				}
+ 			
+ 				row_html += "<td>"+row['2019 National Employment Matrix code']+"</td>"
+ 				row_html += "<td>"+row['Occupation type']+"</td>"
+ 				row_html += "<td>"+row['2019 Employment (thousands)']+"</td>"
+ 				row_html += "<td>"+row['2029 Employment Projection (thousands)']+"</td>"
+ 				row_html += "<td>"+row['Employment change (thouands), 2019-29']+"</td>"
+ 				row_html += "<td>"+row['Employment change percent, 2019-29']+"</td>"
+ 				row_html += "<td>"+row['Percent self employed, 2019']+"</td>"
+ 				row_html += "<td>"+row['Occupational openings, 2019-29 annual average']+"</td>"
+ 				row_html += "<td>"+row['Median annual wage, 2019(1)']+"</td>"
+ 				row_html += "<td>"+row['Typical education needed for entry']+"</td>"
+ 				row_html += "<td>"+row['Work experience in a related occupation']+"</td>"
+ 				row_html += "<td>"+row['Typical on-the-job training needed to attain competency in the occupation']+"</td>"
+ 				
+			    row_html += "</tr>"
+			    table_data += row_html
+		  }
+		  	$('#occupational_changes tbody').html(table_data)
+
+		  	
+
+
+ 			console.log("Done")
+
+		  })
+		  .catch(console.error);
+		console.log("really")
+
+	function find_rows_based_on_key_value(data, key, value){
+		// console.log(value)
+		var rows = $.grep(data, function (item) {
+	//			console.log(item[key] + " vs " + value + " " + item[key] == value)
+			    return item[key] == value;
+			});
+		// console.log(data)
+		return rows
+	}
+
+    // ref: http://stackoverflow.com/a/1293163/2343
+    // This will parse a delimited string into an array of
+    // arrays. The default delimiter is the comma, but this
+    // can be overriden in the second argument.
+    function CSVToArray( strData, strDelimiter ){
+        // Check to see if the delimiter is defined. If not,
+        // then default to comma.
+        strDelimiter = (strDelimiter || ",");
+
+        // Create a regular expression to parse the CSV values.
+        var objPattern = new RegExp(
+            (
+                // Delimiters.
+                "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
+
+                // Quoted fields.
+                "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+
+                // Standard fields.
+                "([^\"\\" + strDelimiter + "\\r\\n]*))"
+            ),
+            "gi"
+            );
+
+
+        // Create an array to hold our data. Give the array
+        // a default empty first row.
+        var arrData = [[]];
+
+        // Create an array to hold our individual pattern
+        // matching groups.
+        var arrMatches = null;
+
+
+        // Keep looping over the regular expression matches
+        // until we can no longer find a match.
+        while (arrMatches = objPattern.exec( strData )){
+
+            // Get the delimiter that was found.
+            var strMatchedDelimiter = arrMatches[ 1 ];
+
+            // Check to see if the given delimiter has a length
+            // (is not the start of string) and if it matches
+            // field delimiter. If id does not, then we know
+            // that this delimiter is a row delimiter.
+            if (
+                strMatchedDelimiter.length &&
+                strMatchedDelimiter !== strDelimiter
+                ){
+
+                // Since we have reached a new row of data,
+                // add an empty row to our data array.
+                arrData.push( [] );
+
+            }
+
+            var strMatchedValue;
+
+            // Now that we have our delimiter out of the way,
+            // let's check to see which kind of value we
+            // captured (quoted or unquoted).
+            if (arrMatches[ 2 ]){
+
+                // We found a quoted value. When we capture
+                // this value, unescape any double quotes.
+                strMatchedValue = arrMatches[ 2 ].replace(
+                    new RegExp( "\"\"", "g" ),
+                    "\""
+                    );
+
+            } else {
+
+                // We found a non-quoted value.
+                strMatchedValue = arrMatches[ 3 ];
+
+            }
+
+
+            // Now that we have our value string, let's add
+            // it to the data array.
+            arrData[ arrData.length - 1 ].push( strMatchedValue );
+        }
+
+        // Return the parsed data.
+        return( arrData );
+    }
+
+    function arrayToJSON(array){
+    	  var headers=array[0]
+    	  var result = [];
+
+		  for(var i=1;i<array.length;i++){
+
+		      var obj = {};
+		      var currentline=array[i];
+
+		      for(var j=0;j<headers.length;j++){
+		          obj[headers[j]] = currentline[j];
+		      }
+
+		      result.push(obj);
+
+		  }
+		  return (result); //JSON
+    }
+
+    function ipeds_award_level(number){
+    	if(number == 3){
+    		return "Associate's Degrees"
+    	}else if(number == 5){
+    		return "Bachelor's Degrees"
+    	}else if(number == 7){
+    		return "Master's Degrees"
+    	}else if(number == 17){
+    		return "Doctor's Degrees - Research"
+    	}else if(number == 18){
+    		return "Doctor's Degrees - Professional"
+    	}else if(number == 19){
+    		return "Doctor's Degrees - Other"
+    	}else if(number == 20){
+    		return "Less than 12 week Certificates"
+    	}else if(number == 21){
+    		return '12 week - 1 Year Certificates 12'
+    	}else if(number == 2){
+    		return '1-2 Year Certificates'
+    	}else if(number == 4){
+    		return '2-4 Year Certificates'
+    	}else if(number == 6){
+    		return 'Postbaccalaureate certificates'
+    	}else if(number == 8){
+    		return "Post-master's certificates"
+    	}
+    }
+
+    function unique_institution_count(filtered_completions){
+    	unitids = []
+    	filtered_completions.forEach( e=> {
+    		if(!unitids.includes(e['UNITID'])){
+    			unitids.push(e['UNITID'])
+    		}
+    	})
+    	return unitids.length
+    }
+
+    function update_selected_program(cip_code){
+ 		var program = $.grep(cip_json, function (item) {
+		    return item['CIPCode'] == cip_code;
+		});
+  		$('#program_selected').html(program[0]['CIPTitle'])
+
+		var institutions = []
+		var states =[]
+		var program_types =[]
+
+		$('#institutions tbody').empty();
+		filtered_completions = find_rows_based_on_key_value(completions_json, 'CIPCODE', cip_code)
+		for(var i=0;i<filtered_completions.length;i++){
+			$('#institutions tbody').append('<tr><td>' + filtered_completions[i]['INSTNM'] +
+				'</td> <td>' + filtered_completions[i]['STABBR'] + '</td> <td>' + filtered_completions[i]['CTOTALT'] + " " + ipeds_award_level(filtered_completions[i]['AWLEVEL']) + '</td> '+
+				'<td>$'+Number(filtered_completions[i]['CHG2AY3']).toLocaleString('en')+'</td></tr>')
+			states.indexOf(filtered_completions[i]['STABBR']) === -1 ? states.push(filtered_completions[i]['STABBR']) : null
+			program_types.indexOf(ipeds_award_level(filtered_completions[i]['AWLEVEL'])) === -1 ? program_types.push(ipeds_award_level(filtered_completions[i]['AWLEVEL'])) : null
+		}
+
+		$('#states').find('option').not(':first').remove();
+		$.each(states.sort(), function(key, value) {   
+	    	$('#states')
+	        	.append($("<option></option>")
+	                .attr("value", key)
+	                .text(value)); 
+		});
+
+		$('#program_types').find('option').not(':first').remove();
+		$.each(program_types.sort(), function(key, value) {   
+	    	$('#program_types')
+	        	.append($("<option></option>")
+	                .attr("value", key)
+	                .text(value)); 
+		});
+
+		$('#inst_options').html(unique_institution_count(filtered_completions))
+		$('#program_detail_text').html(program[0]['CIPTitle'])
+		$('#programs_for_occupation').hide()
+		$('#instiutions_pane').show()
+		$('#program_details').show()
+		topFunction()
+
+    }
+
+    function update_selected_occupation(occupation_code){
+    	$('#occupation_options').hide()
+    	clear_program()
+    	var occupation = $.grep(occupation_changes_and_education, function (item) {
+				    return item['2019 National Employment Matrix code'] == occupation_code;
+				});
+    	occupation_title = occupation[0]['2019 National Employment Matrix title']
+	  	$('#occupation_selected').html(occupation_title)
+	  	$('#occupation_detail_text').html(occupation_title)
+
+
+	  	//get cip codes for selected occupation
+	  	var cip_code_rows = $.grep(cip_soc_json, function (item) {
+		    return item['SOC2018Code'] == occupation_code;
+		});
+
+		var cips = []
+		for(var i=0;i<cip_code_rows.length;i++){
+			cips.push(find_rows_based_on_key_value(cip_json, 'CIPCode', cip_code_rows[i]['CIP2020Code'])[0])
+		}
+
+		$('#programs_for_occupation').empty();
+		$('#programs_for_occupation').append("<lh><strong>Relevant Programs</strong></lh>")
+		cips.forEach(e =>
+			$('#programs_for_occupation').append("<li><a class='program_link' cip='"+e['CIPCode']+"' href='?occupation="+occupation_code+"&program="+e['CIPCode']+"'>"+e['CIPTitle']+"</a> "+e['CIPDefinition']+'</li>')
+		)
+		$('#programs_for_occupation').show()
+		$('#programs_pane').show()
+		$('#ocupation_details').show()
+		$('#program_details').hide()
+		topFunction()
+
+    }
+
+    function clear_program(){
+    	$('#program_selected').html("")
+    	$('#program_detail_text').html("")
+    	$('#program_details').hide()
+    	$('#programs_for_occupation').show()
+    	$('#instiutions_pane').hide()
+    }
+
+    function clear_occupation(){
+    	clear_program()
+    	$('#occupation_selected').html("")
+    	$('#instiutions_pane').hide()
+    	$('#programs_pane').hide()
+    	$('#occupation_options').show()
+		$('#ocupation_details').hide()
+
+    }
+
+    function topFunction() {
+	  document.body.scrollTop = 0; // For Safari
+	  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+	}
+
+	$(document).ready(function(){
+	  $("#occupation_search").on("keyup", function() {
+	    var value = $(this).val().toLowerCase();
+	    $("#occupational_changes tr").filter(function() {
+	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	    });
+	  });
+	});
+
+	$(document).ready(function(){
+	  $("#institution_search").on("keyup", function() {
+	    var value = $(this).val().toLowerCase();
+	    $("#institutions tbody tr").filter(function() {
+	      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+	    });
+	  });
+	});
+
+	$('#states').change(function() {
+		var value = $("#states option:selected").text().toLowerCase();
+		if(value != 'all states'){
+			$("#institutions tbody tr").filter(function() {
+		      $(this).toggle($(this).children().eq(1).text().toLowerCase().indexOf(value) > -1)
+		    });
+		}else{
+			$("#institutions tbody tr").show()
+		}
+	    
+	});
+
+	$('#program_types').change(function() {
+		var value = $("#program_types option:selected").text().toLowerCase();
+		if(value != 'all program types'){
+			$("#institutions tbody tr").filter(function() {
+		      $(this).toggle($(this).children().eq(2).text().toLowerCase().indexOf(value) > -1)
+		    });
+		}else{
+			$("#institutions tbody tr").show()
+		}
+	    
+	});
+		 </script>
+	</body>
+	<!-- icons from uxwing.com -->
+	<!-- to develop locally run 'python3 -m http.server' -->
+</html>

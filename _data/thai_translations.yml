@@ -1,0 +1,24 @@
+chaa:
+  word: "ชา"
+  sound: "chaa"
+  meaning: "tea"
+khao:
+  word: "ข้าว"
+  sound: "khao"
+  meaning: "rice"
+pad:
+  word: "ผัด"
+  sound: "pad"
+  meaning: "fried"
+pu:
+  word: "ปู"
+  sound: "pu"
+  meaning: "crab"
+suay:
+  word: "ผัดปู"
+  sound: "suay"
+  meaning: "beautiful"
+yen:
+  word: "เย็น"
+  sound: "yen"
+  meaning: "cold"

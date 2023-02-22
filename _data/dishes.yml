@@ -1,0 +1,24 @@
+crab-fried-rice:
+  name: "Crab Fried Rice"
+  cuisine: ["Thai"]
+  type: "main"
+  local-names:
+    - language: "Thai"
+      translation: khao, pad, pu
+
+steamed-rice:
+  name: "White Steamed Rice"
+  cuisine: ["Japanese","Thai"]
+  type: "side"
+  local-names:
+    - language: "Thai"
+      translation: khao, suay
+
+thai-tea:
+  name: "Thai Tea"
+  cuisine: ["Thai"]
+  type: "drink"
+  local-names:
+    - language: "Thai"
+      translation: chaa, yen
+    - language: "Japanese"
