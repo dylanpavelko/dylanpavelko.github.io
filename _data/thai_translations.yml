@@ -1,23 +1,67 @@
+bplao:
+  word: "เปล่า"
+  sound: "bplao"
+  meaning: "containing nothing"
 chaa:
   word: "ชา"
   sound: "chaa"
   meaning: "tea"
+kaprao:
+  word: "กะเพรา"
+  sound: "ka-prao"
+  meaning: "Thai Holy Basil"
 khao:
   word: "ข้าว"
   sound: "khao"
   meaning: "rice"
+mamuang:
+  word: "มะม่วง"
+  sound: "ma-muang"
+  meaning: "mango"
+nahm-tahn:
+  word: "น้ำตาล"
+  sound: "nahm-tahn"
+  meaning: "sugar"
+nam:
+  word: "น้ำ"
+  sound: "nam"
+  meaning: "liquid/water"
+niao:
+  word: "เหนียว"
+  sound: "niao"
+  meaning: "sticky"
 pad:
   word: "ผัด"
   sound: "pad"
   meaning: "fried"
+pla:
+  word: "ปลา"
+  sound: "pla"
+  meaning: "fish"
+prik:
+  word: "พริก"
+  sound: "prik"
+  meaning: "chili"
 pu:
   word: "ปู"
   sound: "pu"
   meaning: "crab"
+see-ew:
+  word: "ซีอิ๊ว"
+  sound: "see ew"
+  meaning: "soy sauce"
+som:
+  word: "ส้ม"
+  sound: "som"
+  meaning: "acid/orange fruit"
 suay:
   word: "ผัดปู"
   sound: "suay"
   meaning: "beautiful"
+tam:
+  word: "ตำ"
+  sound: "tam"
+  meaning: "pounded"
 yen:
   word: "เย็น"
   sound: "yen"

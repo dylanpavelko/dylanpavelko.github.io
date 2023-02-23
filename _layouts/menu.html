@@ -3,37 +3,55 @@
   <body>
      {{ content }}
 
-    <div id='menu' style='text-align: center;'>
+     {% assign dishes = "" | split: "," %}
      {% for d in site.data.dishes %}
+     	{% if d[1].cuisine contains page.cuisine %}
+     		{% assign dishes = dishes | push: d %}
+     	{% endif %}
+     {% endfor %}
+
+    <div id='menu' style='text-align: center;'>
+     {% for d in dishes %}
      <p>
      	{% assign dish = d[1] %}
-     	<span style="font-size: 2em;"> {{ dish.name }}</span><br/>
+     	<span style="font-size: 1.5em;"> {{ dish.name }}</span><br/>
      	{% for local in dish.local-names %}
      		{% if page.language == local.language %}
      			{% assign words = local.translation | split: ', ' %}
      			
      			{% if page.language == "Thai" %}
-     				{% assign thai_words = "" | split: ',' %}
+     				{% assign translated_words = "" | split: ',' %}
 	     			{% for word in words %}
 	     				{% assign translation = site.data.thai_translations[word] %}
-	     				{% assign thai_words = thai_words | push: translation %}
+	     				{% assign translated_words = translated_words | push: translation %}
 	     			{% endfor %}
+	     		{% endif %}
+	     		
+	     		{% if page.language == "Japanese" %}
+     				{% assign translated_words = "" | split: ',' %}
+	     			{% for word in words %}
+	     				{% assign translation = site.data.japanese_translations[word] %}
+	     				{% assign translated_words = translated_words | push: translation %}
+	     			{% endfor %}
+	     		{% endif %}
+
 	     			<span style="font-size: 1.5em;">
-	     			{%- for translation in thai_words -%}
+	     			{%- for translation in translated_words -%}
 	     				{{ translation.word }}
 	     			{%- endfor -%}
 	     			</span>
 	     			<br/>
 	     			<em>pronounced:</em>
-	     			{% for translation in thai_words %}
+	     			{% for translation in translated_words %}
 	     				{{ translation.sound }}
 	     			{% endfor %}
 	     			<br/>
 	     			<em>meaning:</em>
-	     			{% for translation in thai_words %}
+	     			{% for translation in translated_words %}
 	     				{{ translation.meaning }}
 	     			{% endfor %}
-     			{% endif %}
+	     			<br/>
+	     			<em>{{ dish.description }}</em>
      			
      		{% endif %}
 		
@@ -41,5 +59,8 @@
      	</p>
      {% endfor %}
  	</div>
+ 	{% for category in page.categories %}
+ 	 {{ category }}
+ 	{% endfor %}
   </body>
 </html>

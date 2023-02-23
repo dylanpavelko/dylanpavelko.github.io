@@ -1,0 +1,24 @@
+gohan:
+  word: "ご飯"
+  sound: "gohan"
+  meaning: "cooked rice"
+miso:
+  word: "味噌"
+  sound: "miso"
+  meaning: "fermented soybean paste"
+nihon:
+  word: "日本"
+  sound: "nihon"
+  meaning: "Japanese"
+shu:
+  word: "酒"
+  sound: "shu"
+  meaning: "liquor"
+ohiya:
+  word: "お冷"
+  sound: "ohiya"
+  meaning: "drinking water"
+shiru:
+  word: "汁"
+  sound: "shiru"
+  meaning: "soup/juice"

@@ -5,20 +5,105 @@ crab-fried-rice:
   local-names:
     - language: "Thai"
       translation: khao, pad, pu
+  external-link: "https://www.seriouseats.com/thai-style-fried-rice-crab-recipe"
 
-steamed-rice:
+mango-sticky-rice:
+  name: "Mango Sticky Rice"
+  cuisine: ["Thai"]
+  type: "dessert"
+  local-names:
+    - language: "Thai"
+      translation: khao, niao, mamuang
+
+miso-soup:
+  name: "Miso Soup"
+  cuisine: ["Japanese"]
+  local-names:
+    - language: "Japanese"
+      translation: miso, shiru
+  description: "Miso soup with with tofu and green onion"
+
+papaya-salad:
+  name: "Thai Green Papaya Salad"
+  cuisine: ["Thai"]
+  type: "main"
+  local-names:
+    - language: "Thai"
+      translation: som, tam
+
+pad-see-ew:
+  name: "Pad See Ew"
+  cuisine: ["Thai"]
+  type: "noodles"
+  local-names:
+    - language: "Thai"
+      translation: pad, see-ew
+  description: "Stir-fried wide rice noodles with Chinese broccoli and choice of protein"
+
+prik-nam-pla:
+  name: "Prik Nam Pla"
+  cuisine: ["Thai"]
+  type: "condiment"
+  local-names:
+    - language: "Thai"
+      translation: prik, nam, pla
+
+prik-nam-som:
+  name: "Prik Nam Som"
+  cuisine: ["Thai"]
+  type: "condiment"
+  local-names:
+    - language: "Thai"
+      translation: prik, nam, som
+
+sake:
+  name: "Sake - Nihonshu"
+  cuisine: ["Japanese"]
+  type: "drink"
+  local-names:
+    - language: "Japanese"
+      translation: nihon, shu
+  description: "Nihonshu is a brewed and fermented liquor using rice, water, and koji."
+
+sugar:
+  name: "Sugar"
+  cuisine: ["Thai"]
+  type: "condiment"
+  local-names:
+    - language: "Thai"
+      translation: "nahm-tahn"
+
+thai-basil-stir-fry:
+  name: "Thai Holy Basil Stir Fry"
+  cuisine: ["Thai"]
+  local-names:
+    - language: "Thai"
+      translation: pad, kaprao
+
+thai-tea:
+  name: "Thai Iced Tea"
+  cuisine: ["Thai"]
+  type: "drink"
+  local-names:
+    - language: "Thai"
+      translation: chaa, yen
+
+water:
+  name: "Water"
+  cuisine: ["Thai", "Japanese"]
+  type: "drink"
+  local-names:
+    - language: "Thai"
+      translation: nam, bplao
+    - language: "Japanese"
+      translation: ohiya
+
+white-steamed-rice:
   name: "White Steamed Rice"
   cuisine: ["Japanese","Thai"]
   type: "side"
   local-names:
     - language: "Thai"
       translation: khao, suay
-
-thai-tea:
-  name: "Thai Tea"
-  cuisine: ["Thai"]
-  type: "drink"
-  local-names:
-    - language: "Thai"
-      translation: chaa, yen
     - language: "Japanese"
+      translation: gohan
