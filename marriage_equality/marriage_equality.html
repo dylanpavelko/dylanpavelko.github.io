@@ -1,0 +1,357 @@
+<html>
+	<head>
+		<style type="text/css">
+
+			body {
+				margin: 0;
+			}
+			.yellow{
+				background-color: yellow;
+			}
+
+			* {
+			  box-sizing: border-box;
+			}
+
+			/* Set a background color */
+			.timeline-container {
+				background: repeating-linear-gradient(
+				    135deg,
+				    #E50000,
+				    #E50000 60px,
+				    #FF8D00 60px,
+				    #FF8D00 120px,
+				    #FFEE00 120px,
+				    #FFEE00 180px,
+				    #028121 180px,
+				    #028121 240px,
+				    #004CFF 240px,
+				    #004CFF 300px,
+				    #760088 300px,
+				    #760088 360px
+				  );
+			  font-family: Helvetica, sans-serif;
+			  width: 100%;
+			  height: 100%;
+			  z-index: -1;
+			  position: absolute;
+			  padding-bottom: 500em;
+			  margin-bottom: -500em;
+  			  filter: grayscale(100%);
+			}
+
+			/* The actual timeline (the vertical ruler) */
+			.timeline {
+			  position: relative;
+			  max-width: 1200px;
+			  margin: 0 auto;
+			}
+
+			/* The actual timeline (the vertical ruler) */
+			.timeline::after {
+			  content: '';
+			  position: absolute;
+			  width: 6px;
+			  background-color: white;
+			  top: 0;
+			  bottom: 0;
+			  left: 50%;
+			  margin-left: -3px;
+			}
+
+			/* Container around content */
+			.container {
+			  padding: 10px 40px;
+			  position: relative;
+			  background-color: inherit;
+			  width: 50%;
+			}
+
+			/* The circles on the timeline */
+			.container::after {
+			  content: '';
+			  position: absolute;
+			  width: 25px;
+			  height: 25px;
+			  right: -17px;
+			  background-color: white;
+			  border: 4px solid #FF9F55;
+			  top: 15px;
+			  border-radius: 50%;
+			  z-index: 1;
+			}
+
+			/* Place the container to the left */
+			.left {
+			  left: 0;
+			}
+
+			/* Place the container to the right */
+			.right {
+			  left: 50%;
+			}
+
+			/* Add arrows to the left container (pointing right) */
+			.left::before {
+			  content: " ";
+			  height: 0;
+			  position: absolute;
+			  top: 22px;
+			  width: 0;
+			  z-index: 1;
+			  right: 30px;
+			  border: medium solid white;
+			  border-width: 10px 0 10px 10px;
+			  border-color: transparent transparent transparent white;
+			}
+
+			/* Add arrows to the right container (pointing left) */
+			.right::before {
+			  content: " ";
+			  height: 0;
+			  position: absolute;
+			  top: 22px;
+			  width: 0;
+			  z-index: 1;
+			  left: 30px;
+			  border: medium solid white;
+			  border-width: 10px 10px 10px 0;
+			  border-color: transparent white transparent transparent;
+			}
+
+			/* Fix the circle for containers on the right side */
+			.right::after {
+			  left: -16px;
+			}
+
+			/* The actual content */
+			.content {
+			  padding: 20px 30px;
+			  background-color: white;
+			  position: relative;
+			  border-radius: 6px;
+			}
+
+			/* Media queries - Responsive timeline on screens less than 600px wide */
+			@media screen and (max-width: 600px) {
+			/* Place the timelime to the left */
+			  .timeline::after {
+			    left: 31px;
+			  }
+
+			/* Full-width containers */
+			  .container {
+			    width: 100%;
+			    padding-left: 70px;
+			    padding-right: 25px;
+			  }
+
+			/* Make sure that all arrows are pointing leftwards */
+			  .container::before {
+			    left: 60px;
+			    border: medium solid white;
+			    border-width: 10px 10px 10px 0;
+			    border-color: transparent white transparent transparent;
+			  }
+
+			/* Make sure all circles are at the same spot */
+			  .left::after, .right::after {
+			    left: 15px;
+			  }
+
+			/* Make all right containers behave like the left ones */
+			  .right {
+			    left: 0%;
+			  }
+			}
+
+			img {
+			  width: 350px;
+			  object-fit: contain;
+			}
+
+			.center {
+			  display: block;
+			  margin-left: auto;
+			  margin-right: auto;
+			}
+		</style>
+		<script type="text/javascript">
+			window.addEventListener("scroll", function() {
+
+			    const maxHeight = document.body.scrollHeight - window.innerHeight;
+			    document.querySelector('.timeline-container').style.paddingBottom = document.querySelector('.timeline').scrollHeight;
+			  	document.querySelector('.timeline-container').style.marginBottom = -document.querySelector('.timeline').scrollHeight;
+			    // console.log(window.pageYOffset);
+
+			    $color_spot1 = document.querySelector('#color1').getBoundingClientRect().top
+			    $color_spot2 = document.querySelector('#color1').getBoundingClientRect().top
+
+			    if(window.pageYOffset > $color_spot2){
+			    	$background_rainbow = document.querySelector('.timeline-container');
+			    	$grayscale_value = 100 - ((window.pageYOffset - $color_spot2) / (maxHeight - $color_spot2)) * 80
+
+					$background_rainbow.style.filter = "grayscale("+$grayscale_value+"%)";
+			    }else if(window.pageYOffset > $color_spot1){
+			    	console.log("Color 1 hit");
+			    	$background_rainbow = document.querySelector('.timeline-container');
+			    	$grayscale_value = 100 - ((window.pageYOffset - $color_spot1) / (maxHeight - $color_spot1)) * 20
+
+					$background_rainbow.style.filter = "grayscale("+$grayscale_value+"%)";
+			    }else{
+			    	$background_rainbow = document.querySelector('.timeline-container');
+			    	$background_rainbow.style.filter = "grayscale("+100+"%)";
+			    }
+			});
+		</script>
+	</head>
+	<body>
+		<div>
+			<h3>When the political is personal - the road to marriage equality</h3>
+			<p>
+				Why does it need to be federally recognized? What are the benefits? Why can't it be called a civil union?
+				(DYLAN NOTE: call out how judiciary branch is acting to protect minorities and not the legislative branch of government.) Add blurb about liberty and judges interpretation of it. Call out observations of how recent this all is and how lucky we are to be alive during this time period benefitting from the work of those before us.
+			</p>
+		</div>
+		 <div class="timeline-container">
+		 </div>
+		 <div class="timeline">
+		 <div class="container right">
+		    <div class="content">
+		      <h2>October 10, 1972</h2>
+		      <p>The start of the legal battle for marriage equality began at University of Minnesota's Minneapolis campus when James Michael MicConnel, a librarian, and Richard John Baker, a law student, applied for a marriage license and were denied by the Clerk of Disctrict Court Gerald Nelson on the basis that they were both men. Baker sued Nelson insisting that the license was not fordbidden (using the legal maxim 'everything that is not forbidden is permitted'). <br><br>
+		      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Jack_Baker_and_Michael_McConnell_at_home%2C_Minneapolis%2C_Minnesota_LCCN2017648764_%28cropped%29.jpg/1920px-Jack_Baker_and_Michael_McConnell_at_home%2C_Minneapolis%2C_Minnesota_LCCN2017648764_%28cropped%29.jpg" title="Baker and McConnel (r) at their Minneapolis home, 1970" alt="Baker and McConnel (r) at their Minneapolis home, 1970" class="center">
+
+		      <!-- MODERN DAY https://www.thetimes.co.uk/imageserver/image/%2Fmethode%2Fsundaytimes%2Fprod%2Fweb%2Fbin%2F90fb41e8-cf55-11eb-8afd-f729c1c2ffd0.jpg?crop=2667%2C1500%2C0%2C0 -->
+		      <br>
+		      The case was heard by the Minnesota Supreme Court (<a href="https://en.wikipedia.org/wiki/Baker_v._Nelson"><em>Baker v. Nelson</em></a>) who ruled agains the couple stating that "construcing a marriage statute to restrict marriage to persons of the opposite sex "does not offend" the U.S. Constitution. Baker appealed to the U.S. Supreme Court arguing that if the court were to construe statues to require opposite-sex couples it would violate their fundamental right to marry under the Due Process Clause of the Fourteenth Amendment, discrimination based on gender, contrary to the Equal Protection Clause of the Fourteenth Amendment; and deprived them of privacy rights flowing from the Ninth Ammendment.<br><br>
+		  	  The US. Supreme Court dismissed hearing the case with the single sentence stating "The appeal is dismissed for want of substantial federal question." <span class="yellow">The U.S. Supreme Courts' dismissal of hearing the case was considered to be a decision on the merits of the case and became binding precedent resulting in lower courts from coming to a contrary conclusion when presented with the precise issue the U.S. Supreme Court declined to hear.</span> This effectively prevented any legal challenges to same-sex marriage for the next twenty years.</p>
+		    </div>
+		 </div>
+		 <div class="container left">
+		    <div class="content">
+		      <h2>1980's</h2>
+		      <p>In a time where being gay meant living in secret or living as an outcast gay marriage was hardly an agenda item, few if any states had laws preventing discrimination on the basis of sexual orientation, yet at the same time the AIDs epidemic in the 1980's and 1990's raised questions around survivorship and inheriteance benefits of same-sex couples.</p>
+		    </div>
+		  </div>
+		 <div class="container right">
+		    <div class="content">
+		      <h2>May 5, 1993</h2>
+		      <p>The Supreme Court of Hawaii ruled in the <a href="https://en.wikipedia.org/wiki/Baehr_v._Miike"><em>Baehr v. Miike</em></a> court case that while Hawaii's consitution's did not include a fundamental right to same-sex marraige, it did find that <span class="yellow">under the state's equal protection clause, denying marriage licenses to same-sex couples constituded discrimation based on sex</span> that required justification by the state. Within the state of Hawaii, this led to a commission to study the issue. While the comission ultimately recommended openning marriage to same-sex couples, the case was dismissed as prior to any further actions Hawaii voters passed an amendment explicitly reserving marriage for opposite-sex couples nullifying the court case.<br><br>
+		      	<img src="https://www.honolulumagazine.com/wp-content/uploads/data-import/02e79cb1/genora-dancel.jpg" title="Geneora Dancel & Ninia Baehr" alt="Geneora Dancel & Ninia Baehr" class="center"><br>
+		      	
+		      	<!-- MODERN DAY https://i0.wp.com/qnotescarolinas.com/wp-content/uploads/2022/10/Ninia-Baehr-Genora-Dancel.jpg -->
+
+		      This ruling, while not resulting in any direct legislative changes created the first real spark of hope for those in favor of same-sex marriage, and stoked the fears of those who wanted to reserve marriage for opposite-sex couples.</p>
+		    </div>
+		  </div>
+		  <div class="container left">
+		    <div class="content">
+		      <h2>September 21, 1996</h2>
+		      <p>President Clinton, despite finding the legislation "divisive and unnecessary", and in the midst of his own extramarital affair (yet to be made public), signs the veto-proof majority-backed <a href='https://www.congress.gov/bill/104th-congress/house-bill/3396'>Defense of Marriage Act (DOMA)</a> into <span class="yellow">law defing marriage by the federal government as between one man and one woman, as well as allowing states to deny same-sex marriages granted under the laws of other states</span>– preventing marriages and the associated benefits for same-sex couples. <br><br>The new legislation was a direct response to the <a href="https://en.wikipedia.org/wiki/Baehr_v._Miike"><em>Baehr v. Miike</em></a> case as if "marriage in Hawaii [were] to include homosexual couples [that] could make such couples eligible for a whole range of deral rights and benefits." The House Judiciary Committee stated that the Act was intended by Congress to "reflect and honor a collective moral judgment and to express moral disapproval of homosexuality" and "make explicit what has been understood under federal law for over 200 years".</p>
+		    </div>
+		  </div>
+		  <div class="container right">
+		    <div class="content">
+		      <h2>June 26, 2003</h2>
+		      <p>The U.S. <span class="yellow">Supreme Court rules that States can not have laws with criminal punishments for consensual, adult non-procreative sexual activity</span> with <a href="https://en.wikipedia.org/wiki/Lawrence_v._Texas"><em>Lawrence v. Texas</em></a> striking down laws in 14 states and making same-sex sexual activity legal in every U.S. state and territory. <span class="yellow">This ruling was the first federal law permitting homosexuality.</span> It was an expansion of  <a href="https://en.wikipedia.org/wiki/Eisenstadt_v._Baird"><em>Eisenstadt v. Baird</em></a> which was a 1972 case that established the right of unmarried people to posssess contraception on the same basis as married couples and effectively legalizing premarital sex.</p>
+		    </div>
+		  </div>
+		  <div class="container left">
+		    <div class="content">
+		      <h2>February 12, 2004</h2><span id="color1"></span>
+		      <p>Del Martin and Phyllis Lyon have the first legal same-sex marriage ceremony performed in the United States when the mayor of San Francsico, Gavin Newsom, ordered city hall to issue marriage licenses to same sex couples, despite it being illegal to do so at both the state and federal level.<br><br>
+		      <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/Del_Martin_and_Phyllis_Lyon_kiss.jpg" class="center"><br>
+		      Marriage licenses were issued to over 4,000 same sex couples until March 11, 2004 when when the Supreme Court of California ordered an immediate halt to gay marriages in San Francisco citing Newsom's lack of authority to bypass state law ruled the marriages were void. This prompted a series of lawsuits that resulted in a state ruling in favor of same-sex marriage in 2008.
+		      </p>
+		    </div>
+		  </div>
+   		  <div class="container right">
+		    <div class="content">
+		      <h2>February 25, 2004</h2>
+		      <p>President Bush in his State of the Union address announces his opposition to same-sex marriage and the House introduces a constitutional ammendment that would define marriage as a between a man and a woman. <br><br>
+		      	<img src="https://upload.wikimedia.org/wikipedia/commons/a/af/2004_State_of_the_Union_Address.jpg" class="center"><br>
+		      	<span class="yellow">Ammendments to the constitution require a 2/3rd's majority vote and would prevent the courts system from extending marriage rights to same-sex couples and require a subsequent 2/3rd's majority vote to change the ammendment.</span> The Federal Marriage Ammendment was drafted and while it won a majority of votes fell short of the 2/3rds majority required to ammend the constitution. Revised versions of the Federal Marriage Ammendment would be reconsidered in subsequent years with the most recent version being considered in 2015.
+		      	<span id="color2"></span>
+		    </div>
+		  </div>
+ 		  <div class="container left">
+		    <div class="content">
+		      <h2>May 17, 2004</h2>
+		      <p>Massachussetts becomes the first state to legalize same-sex marriage via a court ruling that the state's ban on same-sex marriage was unconstitutional. The court said: "We declare that barring an individual from the protections, benefits, and obligations of civil marriage solely because that person would marry a person of the same sex violates the Massachusetts Constitution." It provided a definition of marriage that would meet the State Constitution's requirements: "We construe civil marriage to mean the voluntary union of two persons as spouses, to the exclusion of all others." The court stayed its ruling for 180 days (i.e. until May 17, 2004) to allow the General Court to "take such action as it may deem appropriate in light of this opinion."[1]<br><br>
+		      	On February 4, 2004, the court replied that it was unacceptable to allow different-sex couples marriages but same-sex couples only civil unions, that the distinction between marriage and civil unions constituted unconstitutional discrimination, even if the rights and obligations attached to each were identical. It called the difference between the terms marriage and civil union "a considered choice of language that reflects a demonstrable assigning of same-sex, largely homosexual, couples to second-class status."
+		  		The state law went in to affect May 17, 2004.
+		  	<br><br>
+		  	In response on November 2, 2004 eleven states passed state constituonal amendments defining marriage between a man and a woman. By 2006 the number had grown to 21 states, and by 2009 29 states had constituional provisions restricting marriage and an additional 12 had statues that did so.</p>
+		    </div>
+		  </div>
+		  <div class="container right">
+		    <div class="content">
+		      <h2>September 2005 & October 2007</h2>
+		      <p>California Govenor Arnold Schwarzenegger twice vetoes legislation that would mave made same sex marriage legal in California.</p>
+		    </div>
+		  </div>
+		  <div class="container left">
+		    <div class="content">
+		      <h2>May 15, 2008 - November 2008</h2>
+		      <p>The <span class="yellow">Supreme Court of California issues a decision legalizaing same-sex marraige in California</span> (<a href="https://en.wikipedia.org/wiki/In_re_Marriage_Cases"><em>In re Marriage Cases</em></a>), holding that California's existing opposite-sex definition of marriage violated the constional rights of same-sex couples. <br><br>
+		      This ruling prompted a ballot initiative, known as <a href="https://en.wikipedia.org/wiki/2008_California_Proposition_8">Prop 8</a>, by opponents to same-sex marriage which would ammend the California State constitution to define marriage as between a man and a woman. <span class="yellow">Prop 8 was voted in to California state law in November 2008 ending the licensing and recognition of same-sex marriages in California after less than six months.</span></p>
+		    </div>
+		  </div>
+		  <div class="container right">
+		    <div class="content">
+		      <h2>February 23, 2011</h2>
+		      <p>President Obama declares the <a href="https://en.wikipedia.org/wiki/Defense_of_Marriage_Act">Defense of Marriage Act</a> unconstitutional and instructs Justice Department to stop defending it in court.</p>
+		    </div>
+		  </div>
+		  <div class="container left">
+		    <div class="content">
+		      <h2>July 29, 2013</h2>
+		      <p>The resulitng series of court cases emerging, known as <a href="https://en.wikipedia.org/wiki/Hollingsworth_v._Perry"><em>Hollingsworth v. Perry</em></a>, from the passage of Prop 8 in California was heard by Judge Vaughn Walker who in 2010 <span class="yellow">ruled that the banning of same-sex marriage violated equal protection under the law granted by the Fourteenth Amendment.</span> After the State of California refused to continue to defend Proposiion 8 the official sponosors of the propsoition intervened and appealed to the U.S. Supreme Court. In a somewhat confusing ruling in 2013 the Supreme Court ruled that the official sponsors did not have proper standing to appeal an adverse federal court ruling when the state refused to do so. As a result Judge Walker's findings remain the controlling precedent and Proposition 8 invalid. This meant that <span class="yellow">same-sex marriage was again legal in California based on the repeal of Prop 8 but had no legal consequence for other states or federal marriage recognition</span> and was not considered an opinion by the U.S. Supreme Court on same-sex marriage itself.<br><br>
+		      On the same day, the U.S. Supreme Court also issued a ruling on <a href="https://en.wikipedia.org/wiki/United_States_v._Windsor"><em>United States v. Windsor</em></a>. Edith Windsor had been legally married in New York to her wife Thea Spyer. Spyer died in 2009 leaving her estate to Windsor who was barred from claiming the federal estate tax exemption for surviving spouses based on the Defense of Marriage Act. After hearing the case <span class="yellow">the U.S. Supreme Court ruled that Section 3 of the Defense of Marriage Act violated the constitution as it was a "deprivation of the liberty of the person protected by the Fifth Amendment".</span> In a dissenting opinion, Justice Scalia argued the Court had "no power under the Constitution to invalidate a democratically adopted legislation". This ruling enabled same-sex marriages to be recognized federally with all the associated benefits. <br><br>
+		      Following this ruling the Obama Adminstration ordered the following benefits for all same-sex marriages, regardless if the couple resided in a state that recognized their union or not:
+		      <ul>
+		      	<li>Same-sex couples could file their federal income taxes jointly</li>
+		      	<li>Death benefits are paid to survivors of same-sex marriage by the Social Security Administration.</li>
+		      	<li>The Deparatment of Homeland Security treats same-sex spouses equally for the purpose of obtaining a green card.</li>
+		      	<li>Federal employees in same-sex marriages can apply for health, dental, life, long-term care and retirement benefits.</li>
+		      	<li> Legally married same-sex seniors on Medicare are eligible for equal benefits and joint placement in nursing homes.</li>
+		      </ul>
+		      </p>
+		    </div>
+		  </div>
+		  <div class="container right">
+		    <div class="content">
+		      <h2>June 26, 2015</h2>
+		      <p>In a consolidation of six lower court lawsuits known as <a href='https://en.wikipedia.org/wiki/Obergefell_v._Hodges'><em>Obergefell v. Hodges</em></a>, James Obergefell who was legally married in Maryland to his spouse, John Arthur who was terminally ill with ALS, sued the Ohio Registrar for not allowing him to be listed as his surviving spouse on his death certificate.<br><br> 
+		      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Marriage_rally_%2818997214650%29.jpg/1920px-Marriage_rally_%2818997214650%29.jpg" class="center"><br>
+		      The case was heard by the U.S. Supreme Court who issued a landmark 5-4 decision <span class="yellow"> that ruled the fundamental right to marry is guaranteed to same-sex couples by both the Due Process Clause and the Equal Protection Clause of the Fourteenth Amendment of the U.S. Constitution– granting same-sex couples in all 50 states the right to full, equal recognition under the law</span> (where as previously a same-sex marriage could be recognized federally but not by a given state).<br><br></p>
+		    </div>
+		  </div>
+  		  <div class="container left">
+		    <div class="content">
+		      <h2>June 24, 2022</h2>
+		      <p>The U.S. Supreme Court ruled in <a href="https://en.wikipedia.org/wiki/Dobbs_v._Jackson_Women%27s_Health_Organization"><em>Dobbs v. Jackson Women's Health Organization</em></a>, in a 6-3 vote, overruled prior Supreme Court rulings of <a href="https://en.wikipedia.org/wiki/Roe_v._Wade"><em>Roe v. Wade</em></a> (1973 case ) and <a href="https://en.wikipedia.org/wiki/Planned_Parenthood_v._Casey"><em>Planned Parenthood v. Casey</em></a> (1992 case preventing states from banning abortion prior to fetal viability) returning the rights to individual states to regulate any aspect of abortion not protected by federal law.<br><br>
+		      While having obvious consequences for women's health this <span class="yellow">precedent breaking ruling had significant implications to marriage equality because the <em>Roe v. Wade</em> decision was ruled, in part, on the basis that a pregnant woman has a fundamental right to privacy under the Due Process Clause of the <a href="https://en.wikipedia.org/wiki/Fourteenth_Amendment_to_the_United_States_Constitution">14th Ammendment to the U.S. Constitution</a></span>. In addition to Roe v. Wade other notable cases where the U.S. Supreme Court used the same intepretation of the 14th ammendment granting an individual a right to privacy include <a href="https://en.wikipedia.org/wiki/Griswold_v._Connecticut"><em>Griswold v. Conneticut</em></a> (1965 case protecting a married couple's right to contraception) and both <a href="https://en.wikipedia.org/wiki/Lawrence_v._Texas"><em>Lawrence v. Texas</em></a> (2003 case banning criminal punishments for consensual, adult non-procreative sexual activity) and <a href='https://en.wikipedia.org/wiki/Obergefell_v._Hodges'><em>Obergefell v. Hodges</em></a> (2015 case granting same-sex protections in all 50 states). <span class="yellow">With prior precedence around an individuals right to privacy now in question, so too are the recently won marriage rights of same-sex couples.</span></p>
+		    </div>
+		  </div>
+  		  <div class="container right">
+		    <div class="content">
+		      <h2>December 13, 2022</h2>
+		      <p>In response to concerns about the power of the judiciary to overturn precedent the U.S. Congress passed and President Biden signed the <a href="https://www.congress.gov/bill/117th-congress/house-bill/8404">Respect for Marriage Act</a> Legislative Action which <span class="yellow">replaces the language defining marriage as between a man and a woman and a <em>spouse</em> as a person of the oppsite sex (found to be unconstituional by SCOTUS in United States v. Windsor in 2013, but technically still the law) with language that defines marriage as between two individuals that is valid under state law.</span> The act also requires states to recognize marriages performed out-of-state and that it can not be denied on the basis of sex, race, ethnicity, or national origin. (SCOTUS held state laws barring interracial marriages were unconstituional in <a href="https://en.wikipedia.org/wiki/Loving_v._Virginia"><em>Loving v. Virginia</em></a> in 1967 which was ruled based on some of the same interpretations of Due Process of the Fourteenth Amendment as <a href="https://en.wikipedia.org/wiki/Roe_v._Wade"><em>Roe v. Wade</em></a> and <a href='https://en.wikipedia.org/wiki/Obergefell_v._Hodges'><em>Oberefell v Hodges</em></a>).</p>
+		    </div>
+		  </div>
+  		  <div class="container left">
+		    <div class="content">
+		      <h2>What's left?</h2>
+		      <p>An ammendment, Countries where marriage is not legal</p>
+		    </div>
+		  </div>
+		</div> 
+
+		Sources:
+		<a href="https://www.hrc.org/our-work/stories/the-journey-to-marriage-equality-in-the-united-states">Human Rights Campaign</a>
+		<a href="https://en.wikipedia.org/wiki/History_of_same-sex_marriage_in_the_United_States">Wikipedia - History of Same-Sex Marriage in the United States</a>
+
+	</body>
+</html>
