@@ -1,15 +1,43 @@
+edamame:
+  word: "枝豆"
+  sound: "edamame"
+  meaning: "edamame"
+gari:
+  word: "ガリ"
+  sound: "gari"
+  meaning: "sweet pickled ginger"
 gohan:
   word: "ご飯"
   sound: "gohan"
   meaning: "cooked rice"
+gyoza:
+  word: "餃子"
+  sound: "gyoza"
+  meaning: "dumplings"
+maki:
+  word: "巻き"
+  sound: "maki"
+  meaning: "wound"
 miso:
   word: "味噌"
   sound: "miso"
   meaning: "fermented soybean paste"
+mizu:
+  word: "水"
+  sound: "mizu"
+  meaning: "water"
+nigiri:
+  word: "握り"
+  sound: "nigiri"
+  meaning: "hand pressed"
 nihon:
   word: "日本"
   sound: "nihon"
   meaning: "Japanese"
+shoyu:
+  word: "醬油"
+  sound: "shōyu"
+  meaning: "soy sauce"
 shu:
   word: "酒"
   sound: "shu"
@@ -17,8 +45,25 @@ shu:
 ohiya:
   word: "お冷"
   sound: "ohiya"
-  meaning: "drinking water"
+  meaning: "cold drinking water"
 shiru:
   word: "汁"
   sound: "shiru"
   meaning: "soup/juice"
+temaki:
+  word: "手巻"
+  sound: "temaki"
+  meaning: "hand wound"
+ura:
+  word: "裏"
+  sound: "ura"
+  meaning: "inside, reverse"
+wasabi:
+  word: "山葵"
+  sound: "wasabi"
+  meaning: "wasabi"
+
+zushi:
+  word: "寿司"
+  sound: "zushi"
+  meaning: "sushi"

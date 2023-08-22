@@ -7,6 +7,21 @@ crab-fried-rice:
       translation: khao, pad, pu
   external-link: "https://www.seriouseats.com/thai-style-fried-rice-crab-recipe"
 
+edamame:
+  name: "Edamame"
+  cuisine: ["Japanese"]
+  type: "appetizer"
+  local-names:
+    - language: "Japanese"
+      translation: edamame
+
+gyoza:
+  name: "Gyoza"
+  cuisine: ["Japanese"]
+  local-names:
+    - language: "Japanese"
+      translation: gyoza
+
 mango-sticky-rice:
   name: "Mango Sticky Rice"
   cuisine: ["Thai"]
@@ -40,6 +55,13 @@ pad-see-ew:
       translation: pad, see-ew
   description: "Stir-fried wide rice noodles with Chinese broccoli and choice of protein"
 
+pickled-ginger:
+  name: "Pickled Ginger"
+  cuisine: ["Japanese"]
+  local-names:
+    - language: Japanese
+      translation: gari
+
 prik-nam-pla:
   name: "Prik Nam Pla"
   cuisine: ["Thai"]
@@ -65,6 +87,57 @@ sake:
       translation: nihon, shu
   description: "Nihonshu is a brewed and fermented liquor using rice, water, and koji."
 
+soy-sauce:
+  name: "Soy Sauce"
+  cuisine: ["Japanese"]
+  type: "condiment"
+  local-names:
+    - language: "Japanese"
+      translation: shoyu
+
+sushi:
+  name: "Sushi"
+  cuisine: ["Japanese"]
+  type: "main"
+  local-names:
+    - language: "Japanese"
+      translation: zushi
+  description: "Seasoned rice accompanied with a variety of ingredients, such as fish -often raw- and vegetables"
+
+sushi-maki:
+  name: "Sushi - Maki Roll"
+  cuisine: ["Japanese"]
+  local-names:
+    - language: "Japanese"
+      translation: maki, zushi
+  description: "Rolled sushi, generally wrapped in nori (seaweed) and cut into six to eight pieces"
+
+sushi-uramaki:
+  name: "Sushi - Uramaki Roll"
+  cuisine: ["Japanese"]
+  local-names:
+    - language: "Japanese"
+      translation: ura, maki, zushi
+  description: "A popular western creation, it is an 'inside out' maki roll with the rice on the outside of the roll."
+
+sushi-nigiri:
+  name: "Sushi - Nigiri"
+  cuisine: ["Japanese"]
+  type: "main"
+  local-names:
+    - language: Japanese
+      translation: nigiri, zushi
+  description: "A mound of sushi rice typically topped with raw fish"
+
+sushi-temaki:
+  name: "Sushi - Temaki Hand Roll"
+  cuisine: ["Japanese"]
+  type: "main"
+  local-names:
+    - language: Japanese
+      translation: temaki, zushi
+  description: "A cone-shaped style of sushi with nori (seaweed) on the outside and ingredients spilling out the wide end"
+
 sugar:
   name: "Sugar"
   cuisine: ["Thai"]
@@ -88,6 +161,15 @@ thai-tea:
     - language: "Thai"
       translation: chaa, yen
 
+wasabi:
+  name: "Wasabi"
+  cuisine: ["Japanese"]
+  type: "condiment"
+  local-names:
+    - language: "Japanese"
+      translation: wasabi
+  description: "A pungent spicy paste"
+
 water:
   name: "Water"
   cuisine: ["Thai", "Japanese"]
@@ -95,6 +177,8 @@ water:
   local-names:
     - language: "Thai"
       translation: nam, bplao
+    - language: "Japanese"
+      translation: mizu
     - language: "Japanese"
       translation: ohiya
 
