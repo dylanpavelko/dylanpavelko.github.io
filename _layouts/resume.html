@@ -96,6 +96,8 @@
                 skill_highlights.forEach( text => {
                     text.parentElement.style.display = "inline";
                     text.classList.add('highlight');
+
+                    //TODO: need to change 'More' to 'Less on these expanded sections'
                 })
 
                 //step four b set skill name and skill count
@@ -122,12 +124,14 @@
 
             function next_highlight(){
                 if(highlight_index < skill_highlights.length){
-                    scrollToSmoothly(skill_highlights[highlight_index].offsetTop, 500);
+                    highlight = skill_highlights[highlight_index]
+                    scrollToSmoothly(highlight.offsetTop, 500);
                     highlight_index=highlight_index+1;
                     document.getElementById("skill-count").innerHTML = highlight_index;
                 }
 
                 //if bottom of page is reached (or perhaps in all cases) move the skill scroller to a place that appropriately showcases the highlight
+                document.getElementById("scroller").style.top = highlight.offsetHeight+highlight.offsetTop+'px';
 
                 //check to see if first highlight in list, if so inactivate prior button
                 if(highlight_index == 1){
