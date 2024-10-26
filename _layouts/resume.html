@@ -62,6 +62,18 @@
             .description{
                 display: none;
             }
+
+            .expand{
+                font-family: Arial, Helvetica, sans-serif;
+                cursor: pointer;
+                font-size: 80%;
+                color: darkslategray;
+            }
+            .expand:hover{
+                text-decoration: underline;
+            }
+
+
         </style>
             
         <script>
@@ -74,7 +86,8 @@
                 }
 
                 //step two - highlight selected skill pill
-                
+                  //need better color contrast here to do this work
+
                 //step three - find any relevant skill details
                 skill_highlights = document.querySelectorAll('[skill='+skill+']');
 
@@ -170,6 +183,36 @@
                     text.classList.remove('highlight');
                 })
             }
+
+            function expand(element){
+                description = element.previousSibling.previousSibling.previousSibling;
+                if(element.innerHTML=="More"){
+                    description.style.display = "inline";
+                    element.innerHTML="Less"
+                }else if(element.innerHTML == "Less"){
+                    description.style.display = "none";
+                    element.innerHTML="More"
+                }else if(element.innerHTML == "Expand All"){
+                    document.querySelectorAll(".description").forEach( description => {
+                        description.style.display = "inline";
+                    })
+                    document.querySelectorAll(".expand").forEach( more => {
+                        more.innerHTML = "Less";
+                    })
+                    element.innerHTML = "Collapse All"
+
+                }else if(element.innerHTML == "Collapse All"){
+                    descriptions = document.querySelectorAll(".description");
+                    descriptions.forEach( description => {
+                        description.style.display = "none";
+                    })
+                    document.querySelectorAll(".expand").forEach( more => {
+                        more.innerHTML = "More";
+                    })
+                    element.innerHTML = "Expand All"
+                }
+                
+            }
         </script>
     </head>
     <body>
@@ -196,11 +239,32 @@
     </div>
     </div>
     <h3>Work History</h3>
-    <a href>Expand All</a>
+    <span class="expand" onclick="expand(this)">Expand All</span>
     <div>
+        {% assign company = "" %}
         {% for job in site.data.jobs %}
         {% assign j = job[1] %}
+        {% if company != j.company %}
+            {% if company != "" %}
+                </div></div>
+            {% endif %}
+            
+            {% assign company = j.company %}
+            {% for c in site.data.companies %}
+                {% if c[0] == company %}
+                    {% assign comp = c[1] %}
+                    <div class="company-card">
+                    <a href="{{comp.website}}" target="_blank">
+                        <img src="{{comp.logo}}" width="200"/>
+                    </a>
+                    <br>
+                    <div>{{comp.blurb}}</div>
+                    <div style="border-left: 3px solid {{comp.border-color}};">
 
+                {% endif %}
+            {% endfor %}
+
+        {% endif %}
             <div class="box">
                 <strong>{{j.title}}</strong>
                 <span class="dates">
@@ -208,7 +272,7 @@
                 </span>              
                 <br>
                 {{ j.short }} 
-                <span class="description"><br>{{ j.description }}</span> <span class="expand">More</span>
+                <span class="description"><br>{{ j.description }}</span> <br><span class="expand" onclick="expand(this)">More</span>
             </div>
         {% endfor %}
         </div>

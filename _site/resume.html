@@ -62,6 +62,18 @@
             .description{
                 display: none;
             }
+
+            .expand{
+                font-family: Arial, Helvetica, sans-serif;
+                cursor: pointer;
+                font-size: 80%;
+                color: darkslategray;
+            }
+            .expand:hover{
+                text-decoration: underline;
+            }
+
+
         </style>
             
         <script>
@@ -74,7 +86,8 @@
                 }
 
                 //step two - highlight selected skill pill
-                
+                  //need better color contrast here to do this work
+
                 //step three - find any relevant skill details
                 skill_highlights = document.querySelectorAll('[skill='+skill+']');
 
@@ -170,6 +183,36 @@
                     text.classList.remove('highlight');
                 })
             }
+
+            function expand(element){
+                description = element.previousSibling.previousSibling.previousSibling;
+                if(element.innerHTML=="More"){
+                    description.style.display = "inline";
+                    element.innerHTML="Less"
+                }else if(element.innerHTML == "Less"){
+                    description.style.display = "none";
+                    element.innerHTML="More"
+                }else if(element.innerHTML == "Expand All"){
+                    document.querySelectorAll(".description").forEach( description => {
+                        description.style.display = "inline";
+                    })
+                    document.querySelectorAll(".expand").forEach( more => {
+                        more.innerHTML = "Less";
+                    })
+                    element.innerHTML = "Collapse All"
+
+                }else if(element.innerHTML == "Collapse All"){
+                    descriptions = document.querySelectorAll(".description");
+                    descriptions.forEach( description => {
+                        description.style.display = "none";
+                    })
+                    document.querySelectorAll(".expand").forEach( more => {
+                        more.innerHTML = "More";
+                    })
+                    element.innerHTML = "Expand All"
+                }
+                
+            }
         </script>
     </head>
     <body>
@@ -197,11 +240,32 @@
     </div>
     </div>
     <h3>Work History</h3>
-    <a href>Expand All</a>
+    <span class="expand" onclick="expand(this)">Expand All</span>
     <div>
         
         
+        
+        
+            
+            
+            
+            
+                
+                    
+                    <div class="company-card">
+                    <a href="https://www.workday.com" target="_blank">
+                        <img src="https://logos-world.net/wp-content/uploads/2021/03/Workday-Logo.png" width="200"/>
+                    </a>
+                    <br>
+                    <div>Product Leader. Helpled Workday scale from a pre-IPO company of less than 1,000 employees making $274M in revenue to an over 18,000 employee <a href='https://fortune.com/2024/06/05/fortune-500-workday-hr-software-company-debut/'' target='_blank'>Fortune 500</a> company making over $8B in annual revenue.</div>
+                    <div style="border-left: 3px solid #005cb9;">
 
+                
+            
+                
+            
+
+        
             <div class="box">
                 <strong>Manager, Product Management</strong>
                 <span class="dates">
@@ -209,79 +273,101 @@
                 </span>              
                 <br>
                 I manage a team of 6 
-                <span class="description"><br>And so much more</span> <span class="expand">More</span>
+                <span class="description"><br>And so much more</span> <br><span class="expand" onclick="expand(this)">More</span>
             </div>
         
         
-
+        
             <div class="box">
                 <strong>Functional Architect (Principal Product Manager)</strong>
                 <span class="dates">
                     <em>Jun 2021 - Apr 2022</em>
                 </span>              
                 <br>
-                 
-                <span class="description"><br>Organized and led large-scale, multi-team, initiatives that span across functional areas; Identify top use cases that could employ machine learning</span> <span class="expand">More</span>
+                Help teams design interconnected solutions 
+                <span class="description"><br>Organized and led large-scale, multi-team, initiatives that span across functional areas; Identify top use cases that could employ machine learning</span> <br><span class="expand" onclick="expand(this)">More</span>
             </div>
         
         
-
+        
             <div class="box">
                 <strong>Product Strategy Director</strong>
                 <span class="dates">
                     <em>May 2019 - Jun 2021</em>
                 </span>              
                 <br>
-                 
-                <span class="description"><br>• <span class='detail' skill='strategy'>Develop and position the vision and priorities for Workday Student to maximize success for our customers</span> • Perform Country Specific Addressable Market Analysis of Annual Recurring Revenue • <span class='detail' skill='strategy'>Partnered with Corporate Finance to define multi-year plan</span> • Present at Industry Analyst Briefings • Collaborate with Product Marketing and Competitive Intelligence teams to maximize subscription sales • Leading product adoption analytics project to drive better data-driven decision making for over 800 features • Leading cross-organizational customer group to model the intersection of enrollment planning with budget planning</span> <span class="expand">More</span>
+                Led initiatives to quantify and assess global market and investment opportunities. 
+                <span class="description"><br>• <span class='detail' skill='strategy'>Develop and position the vision and priorities for Workday Student to maximize success for our customers</span> • Perform Country Specific Addressable Market Analysis of Annual Recurring Revenue • <span class='detail' skill='strategy'>Partnered with Corporate Finance to define multi-year plan</span> • Present at Industry Analyst Briefings • Collaborate with Product Marketing and Competitive Intelligence teams to maximize subscription sales • Leading product adoption analytics project to drive better data-driven decision making for over 800 features • Leading cross-organizational customer group to model the intersection of enrollment planning with budget planning</span> <br><span class="expand" onclick="expand(this)">More</span>
             </div>
         
         
-
+        
             <div class="box">
                 <strong>Functional Architect (Senior Product Manager)</strong>
                 <span class="dates">
                     <em>Sept 2017 - May 2019</em>
                 </span>              
                 <br>
-                 
-                <span class="description"><br>Architecture stuff. Selected as organization's sole representitive to act a Culture Ambassador to be a required component of all Workday interviews ensuring candidates would be 'culture adds' to Workday and avoid office politics. Participated in every interview across roles for 2 year period.</span> <span class="expand">More</span>
+                Led architecture initiatives to ensure growth and scalability of Workday Student. 
+                <span class="description"><br>Architecture stuff. Selected as organization's sole representitive to act a Culture Ambassador to be a required component of all Workday interviews ensuring candidates would be 'culture adds' to Workday and avoid office politics. Participated in every interview across roles for 2 year period.</span> <br><span class="expand" onclick="expand(this)">More</span>
             </div>
         
         
-
+        
             <div class="box">
                 <strong>Senior Product Manager</strong>
                 <span class="dates">
                     <em>Oct 2013 - Sept 2017</em>
                 </span>              
                 <br>
-                 
-                <span class="description"><br><span class='detail' skill='pm'>As a product manager I worked with industry design partners, customers, and functional experts to create innovative solutions for Higher Educational Institutions.</span> Using an agile development methodology I collaborated on the design and development of the product with Workday Application Developers, User Experience Engineers & Researchers, and QA Engineers; in addition, I represented the product to any teams outside of our development organization. I was the founding Product Management Lead for Campus Engagement, and Academic Advising (leading those products through their respective General Availability releases) as well as playing an integral role to the development of the Student Records product.</span> <span class="expand">More</span>
+                A founding member of the PM team responsible for the first cloud-based Student Information System. 
+                <span class="description"><br><span class='detail' skill='pm'>As a product manager I worked with industry design partners, customers, and functional experts to create innovative solutions for Higher Educational Institutions.</span> Using an agile development methodology I collaborated on the design and development of the product with Workday Application Developers, User Experience Engineers & Researchers, and QA Engineers; in addition, I represented the product to any teams outside of our development organization. I was the founding Product Management Lead for Campus Engagement, and Academic Advising (leading those products through their respective General Availability releases) as well as playing an integral role to the development of the Student Records product.</span> <br><span class="expand" onclick="expand(this)">More</span>
             </div>
         
         
-
+        
             <div class="box">
                 <strong>Test Automation Engineer</strong>
                 <span class="dates">
                     <em>Jan 2012 - Oct 2013</em>
                 </span>              
                 <br>
-                 
-                <span class="description"><br>I manage a team of 6.</span> <span class="expand">More</span>
+                Coded frameworks to support automated regression testing 
+                <span class="description"><br>I manage a team of 6.</span> <br><span class="expand" onclick="expand(this)">More</span>
             </div>
         
         
+        
+            
+                </div></div>
+            
+            
+            
+            
+                
+            
+                
+                    
+                    <div class="company-card">
+                    <a href="https://www.mindbodyonline.com/" target="_blank">
+                        <img src="https://clipground.com/images/mindbody-logo-8.png" width="200"/>
+                    </a>
+                    <br>
+                    <div></div>
+                    <div style="border-left: 3px solid #ef831f;">
 
+                
+            
+
+        
             <div class="box">
                 <strong>Automated Test Developer</strong>
                 <span class="dates">
                     <em>Jul 2011 - Dec 2011</em>
                 </span>              
                 <br>
-                 
-                <span class="description"><br>Developed automated system regression tests for online B2B platform of over 10,000 customers.</span> <span class="expand">More</span>
+                Developed automated regression system tests and tooling. 
+                <span class="description"><br>Developed automated system regression tests for online B2B platform of over 10,000 customers.</span> <br><span class="expand" onclick="expand(this)">More</span>
             </div>
         
         </div>
