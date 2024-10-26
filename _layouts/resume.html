@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dylan Pavelko's CV</title>
+        <style>
+            body{
+                background-color: #D7D2CB;
+            }
+            a{
+                font-family: Arial, Helvetica, sans-serif;
+                color: blue;
+            }
+            .box{
+                background-color: white;
+                margin: 1em;
+                padding: .5em;
+            }
+            .dates{
+                float: right;
+            }
+            .skill-pill{
+                color: darkslategray;
+                border: 1px solid transparent ;   
+                background-color: darkgray;
+                padding: 0.5em;      
+                font-size: small;
+                font-variant-caps: all-small-caps;
+            }
+            #scroller{
+                color: darkslategray;
+            }
+            .action{
+                color: black;
+            }
+            .skill-pill:hover, .action:hover{
+                color: white;
+                cursor: pointer;   
+
+            }
+            .skill-pill:hover{
+                border: 1px solid white;
+            }
+            .button{
+                margin-left: 0.5em;
+                margin-right: 0.5em;
+                margin-top: 0.5em;
+                margin-bottom: 0.5em;
+
+            }
+
+            .highlight{
+                background-color: rgb(255, 238, 0);
+            }
+
+            #scroller{
+                padding: 0.5em;
+                background-color: darkgray;
+                position: fixed;
+                visibility: hidden;
+            }
+
+            .description{
+                display: none;
+            }
+        </style>
+            
+        <script>
+            var skill_highlights;
+            var highlight_index=0;
+            function skill_highlight(element, skill){
+                //step one - unhighlight any previous skills (pills and details)
+                if(skill_highlights != null){
+                    unhilight_all();
+                }
+
+                //step two - highlight selected skill pill
+                
+                //step three - find any relevant skill details
+                skill_highlights = document.querySelectorAll('[skill='+skill+']');
+
+
+                //step four - expand and highlight skill details
+                skill_highlights.forEach( text => {
+                    text.parentElement.style.display = "inline";
+                    text.classList.add('highlight');
+                })
+
+                //step four b set skill name and skill count
+                document.getElementById("scroller-skill-name").innerHTML = element.innerHTML;
+                document.getElementById("total-skill-highlights").innerHTML=skill_highlights.length;
+
+                //step four c open skill summary
+
+                //step five open skill scroller 
+                document.getElementById("scroller").style.visibility = "visible";
+
+                //step five b move to first highlight
+                highlight_index=0;
+                next_highlight();                
+            }
+
+            function prev_highlight(){
+                if(highlight_index > 1){
+                    highlight_index=highlight_index-2;
+                    next_highlight()
+                }
+                
+            }
+
+            function next_highlight(){
+                if(highlight_index < skill_highlights.length){
+                    scrollToSmoothly(skill_highlights[highlight_index].offsetTop, 500);
+                    highlight_index=highlight_index+1;
+                    document.getElementById("skill-count").innerHTML = highlight_index;
+                }
+
+                //if bottom of page is reached (or perhaps in all cases) move the skill scroller to a place that appropriately showcases the highlight
+
+                //check to see if first highlight in list, if so inactivate prior button
+                if(highlight_index == 1){
+                    document.getElementById("prior-highlight").classList.remove("action");   
+                }else{
+                    document.getElementById("prior-highlight").classList.add("action");   
+                }
+
+                //check to see if last highlight in list, if so inactivate next button
+                if(highlight_index == skill_highlights.length){
+                    document.getElementById("next-highlight").classList.remove("action");
+                }else{
+                    document.getElementById("next-highlight").classList.add("action");
+                }   
+            }
+
+
+
+
+            /*
+            https://stackoverflow.com/questions/51689653/how-to-smoothly-scroll-to-an-element-in-pure-javascript
+            @param pos: the y-position to scroll to (in pixels)
+            @param time: the exact amount of time the scrolling will take (in milliseconds)
+            */
+            function scrollToSmoothly(pos, time) {
+                var currentPos = window.pageYOffset;
+                var start = null;
+                if(time == null) time = 500;
+                pos = +pos, time = +time;
+                window.requestAnimationFrame(function step(currentTime) {
+                    start = !start ? currentTime : start;
+                    var progress = currentTime - start;
+                    if (currentPos < pos) {
+                        window.scrollTo(0, ((pos - currentPos) * progress / time) + currentPos);
+                    } else {
+                        window.scrollTo(0, currentPos - ((currentPos - pos) * progress / time));
+                    }
+                    if (progress < time) {
+                        window.requestAnimationFrame(step);
+                    } else {
+                        window.scrollTo(0, pos);
+                    }
+                });
+            }
+
+            function close_scroller(){
+                document.getElementById("scroller").style.visibility = "hidden";
+                unhilight_all();
+            }
+
+            function unhilight_all(){
+                skill_highlights.forEach( text => {
+                    text.classList.remove('highlight');
+                })
+            }
+        </script>
+    </head>
+    <body>
+        {{ content }}
+    <h1>Dylan Pavelko</h1>
+    <a href="https://www.linkedin.com/in/dylanpavelko" target="_blank">Contact via LinkedIn</a>
+    <h3>Highlighted Skills</h3>
+    <div>
+        <span class="skill-pill">Organizational Leadership</span>
+        <span class="skill-pill" onclick="skill_highlight(this,'pm')">Product Management (1)</span>
+        <span class="skill-pill" onclick="skill_highlight(this,'strategy')">Product Strategy (2)</span>
+        <span class="skill-pill">Product Design</span>
+    </div>
+    <div id="scroller">
+        <span id="scroller-skill-name">Skill Name</span>
+        <span id='prior-highlight' class="action" onclick="prev_highlight()">
+            <span class="button">&#x2B9D;</span>
+        </span> 
+        <span id='next-highlight' class="action" onclick="next_highlight()">
+            <span class="button">&#x2B9F;</span>
+        </span>
+        <span id="skill-count">1</span>/<span id="total-skill-highlights">N</span>
+        <span id="'close-scroller" class="action button" onclick="close_scroller()">&#x1F5D9</span>
+    </div>
+    </div>
+    <h3>Work History</h3>
+    <a href>Expand All</a>
+    <div>
+        {% for job in site.data.jobs %}
+        {% assign j = job[1] %}
+
+            <div class="box">
+                <strong>{{j.title}}</strong>
+                <span class="dates">
+                    <em>{{j.start-date}} - {% if j.end-date==""%}Present{% else%}{{j.end-date}}{%endif%}</em>
+                </span>              
+                <br>
+                {{ j.short }} 
+                <span class="description"><br>{{ j.description }}</span> <span class="expand">More</span>
+            </div>
+        {% endfor %}
+        </div>
+        <h3>Education</h3>
+        <div class="box">
+            <strong>Bachelor of Science Degree in Electrical Engineering</strong>
+            <br>
+            California Polytechnic State University, San Luis Obispo
+        </div>
+
+    </body>
+</html>
