@@ -79,6 +79,7 @@
         <script>
             var skill_highlights;
             var highlight_index=0;
+            
             function skill_highlight(element, skill){
                 //step one - unhighlight any previous skills (pills and details)
                 if(skill_highlights != null){
@@ -123,15 +124,32 @@
             }
 
             function next_highlight(){
+                console.log("init y:" + window.scrollY)
                 if(highlight_index < skill_highlights.length){
                     highlight = skill_highlights[highlight_index]
                     scrollToSmoothly(highlight.offsetTop, 500);
+
+                    //if bottom of page is reached (or perhaps in all cases) move the skill scroller to a place that appropriately showcases the highlight
+                    console.log("new y:" + window.scrollY);
+                    //TODO can't figure this out..... the problem is that the position is calculation prior to the scrolling in 0.5 seconds. Can't figure out how to accurately predict where the scroll will be when the scroll bar stops short due to a big page size
+                    if(document.body.offsetHeight - highlight.offsetTop < window.innerHeight){
+                        scroll_amount = document.body.offsetHeight - window.innerHeight;
+                        scroller_pos = highlight.offsetTop + highlight.offsetHeight - scroll_amount - (16*2) +'px';
+                        console.log("scoll amount: " + scroll_amount);
+                        console.log("offsetTop: " + highlight.offsetTop);
+                        console.log("offsetHeight: " + highlight.offsetHeight);
+
+                    }else{
+                        scroller_pos = highlight.offsetHeight +'px';
+                    }
+                    document.getElementById("scroller").style.top = scroller_pos;
+
+
+
                     highlight_index=highlight_index+1;
                     document.getElementById("skill-count").innerHTML = highlight_index;
                 }
 
-                //if bottom of page is reached (or perhaps in all cases) move the skill scroller to a place that appropriately showcases the highlight
-                document.getElementById("scroller").style.top = highlight.offsetHeight+highlight.offsetTop+'px';
 
                 //check to see if first highlight in list, if so inactivate prior button
                 if(highlight_index == 1){
