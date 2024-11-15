@@ -6,39 +6,58 @@
             body{
                 background-color: #D7D2CB;
             }
+
             a{
-                font-family: Arial, Helvetica, sans-serif;
-                color: blue;
+                color: black;
+            }
+
+            a[target="_blank"]::after {
+                content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+                margin: 0 3px 0 5px;
+            }
+
+            .company-card{
+                background-color: #f7EFDE;
+                filter: drop-shadow(8px 8px 10px gray);
             }
             .box{
                 background-color: white;
                 margin: 1em;
                 padding: .5em;
+                transition: ease all .5s;
             }
             .dates{
                 float: right;
             }
             .skill-pill{
-                color: darkslategray;
-                border: 1px solid transparent ;   
-                background-color: darkgray;
+                color: white;
+                border: 2px solid white ;   
+                background-color: #129840;
                 padding: 0.5em;      
                 font-size: small;
                 font-variant-caps: all-small-caps;
+                border-radius: 25px;
+                padding-left: 1em;
+                padding-right: 1em;
+                display: inline-block;
+                margin: 0.25em;
             }
+
             #scroller{
                 color: darkslategray;
+                position: absolute;
+                z-index: 1;
             }
             .action{
                 color: black;
             }
             .skill-pill:hover, .action:hover{
-                color: white;
+                background-color: #37ce6c;
                 cursor: pointer;   
 
             }
             .skill-pill:hover{
-                border: 1px solid white;
+                border: 2px solid white;
             }
             .button{
                 margin-left: 0.5em;
@@ -49,7 +68,7 @@
             }
 
             .highlight{
-                background-color: rgb(255, 238, 0);
+                background-color: #37ce6c;
             }
 
             #scroller{
@@ -57,6 +76,7 @@
                 background-color: darkgray;
                 position: fixed;
                 visibility: hidden;
+                transition: ease all .5s;
             }
 
             .description{
@@ -73,6 +93,50 @@
                 text-decoration: underline;
             }
 
+            #headshot {
+                border-radius: 50%;
+                border: 5px solid white;
+                width: 80%;
+
+            }
+
+            #heading {
+                display: inline-block;
+                width: 25%;
+                vertical-align: top;
+                position: fixed;
+                background-color: #129840;
+                color: white;
+                margin: 0;
+                top: 0;
+                left: 0;
+                height: 100%;
+                transition: ease all .5s;
+                box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
+            }
+
+            #heading-content {
+                margin: 2em;
+            }
+            #main {
+                display: inline-block;
+                margin-left: 30%;
+                transition: ease all .5s;
+                max-width: 850px;
+                margin-top: 50px;
+            }
+
+            @media screen and (max-width: 786px){
+                #heading {
+                    width: 100%;
+                    height: unset;
+                    position: relative;
+                }
+
+                #main {
+                    width: 100%;
+                }
+            }
 
         </style>
             
@@ -95,7 +159,7 @@
 
                 //step four - expand and highlight skill details
                 skill_highlights.forEach( text => {
-                    text.parentElement.style.display = "inline";
+                    text.parentElement.parentElement.parentElement.style.display = "inline";
                     text.classList.add('highlight');
 
                     //TODO: need to change 'More' to 'Less on these expanded sections'
@@ -130,22 +194,17 @@
                     scrollToSmoothly(highlight.offsetTop, 500);
 
                     //if bottom of page is reached (or perhaps in all cases) move the skill scroller to a place that appropriately showcases the highlight
-                    console.log("new y:" + window.scrollY);
-                    //TODO can't figure this out..... the problem is that the position is calculation prior to the scrolling in 0.5 seconds. Can't figure out how to accurately predict where the scroll will be when the scroll bar stops short due to a big page size
                     if(document.body.offsetHeight - highlight.offsetTop < window.innerHeight){
                         scroll_amount = document.body.offsetHeight - window.innerHeight;
-                        scroller_pos = highlight.offsetTop + highlight.offsetHeight - scroll_amount - (16*2) +'px';
-                        console.log("scoll amount: " + scroll_amount);
-                        console.log("offsetTop: " + highlight.offsetTop);
-                        console.log("offsetHeight: " + highlight.offsetHeight);
+                        scroller_pos = highlight.offsetTop + highlight.offsetHeight - scroll_amount + 130 - (16*2)+ 'px'; //16*2 is to account for margins on body
 
                     }else{
-                        scroller_pos = highlight.offsetHeight +'px';
+                        scroller_pos = highlight.offsetHeight + 115 +'px';
                     }
+                    //set scroller to y position
                     document.getElementById("scroller").style.top = scroller_pos;
 
-
-
+                    //update to new skill
                     highlight_index=highlight_index+1;
                     document.getElementById("skill-count").innerHTML = highlight_index;
                 }
@@ -198,6 +257,8 @@
             function close_scroller(){
                 document.getElementById("scroller").style.visibility = "hidden";
                 unhilight_all();
+
+                //consider first setting transition to 0 and then setting it back to 0.5 after close
             }
 
             function unhilight_all(){
@@ -239,71 +300,99 @@
     </head>
     <body>
         {{ content }}
-    <h1>Dylan Pavelko</h1>
-    <a href="https://www.linkedin.com/in/dylanpavelko" target="_blank">Contact via LinkedIn</a>
-    <h3>Highlighted Skills</h3>
-    <div>
-        <span class="skill-pill">Organizational Leadership</span>
-        <span class="skill-pill" onclick="skill_highlight(this,'pm')">Product Management (1)</span>
-        <span class="skill-pill" onclick="skill_highlight(this,'strategy')">Product Strategy (2)</span>
-        <span class="skill-pill">Product Design</span>
-    </div>
-    <div id="scroller">
-        <span id="scroller-skill-name">Skill Name</span>
-        <span id='prior-highlight' class="action" onclick="prev_highlight()">
-            <span class="button">&#x2B9D;</span>
-        </span> 
-        <span id='next-highlight' class="action" onclick="next_highlight()">
-            <span class="button">&#x2B9F;</span>
-        </span>
-        <span id="skill-count">1</span>/<span id="total-skill-highlights">N</span>
-        <span id="'close-scroller" class="action button" onclick="close_scroller()">&#x1F5D9</span>
-    </div>
-    </div>
-    <h3>Work History</h3>
-    <span class="expand" onclick="expand(this)">Expand All</span>
-    <div>
-        {% assign company = "" %}
-        {% for job in site.data.jobs %}
-        {% assign j = job[1] %}
-        {% if company != j.company %}
-            {% if company != "" %}
-                </div></div>
-            {% endif %}
-            
-            {% assign company = j.company %}
-            {% for c in site.data.companies %}
-                {% if c[0] == company %}
-                    {% assign comp = c[1] %}
-                    <div class="company-card">
-                    <a href="{{comp.website}}" target="_blank">
-                        <img src="{{comp.logo}}" width="200"/>
-                    </a>
-                    <br>
-                    <div>{{comp.blurb}}</div>
-                    <div style="border-left: 3px solid {{comp.border-color}};">
+        <div id="heading">
+            <div id="heading-content">
+                <img id="headshot" src="https://media.licdn.com/dms/image/v2/C4D03AQGBIbwVLWPV1Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1516505881817?e=1736985600&v=beta&t=KSJReHtHetHRW4jzYU0ck8kJx4TW9dcPmf9gcrJH340">
+                <h1>Dylan Pavelko</h1>
+                <a href="https://www.linkedin.com/in/dylanpavelko" target="_blank">Contact via LinkedIn</a>
+                <h3>Interactive Highlighted Skills</h3>
+                <div>
+                    <span class="skill-pill" onclick="skill_highlight(this,'pm')">Product Management (1)</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'leadership')">Leadership</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'strategy')">Product Strategy (2)</span>
+                    <span class="skill-pill">Product Design</span>
+                </div>
+            </div>
+        </div>
+        <div id="main">
+            <span style="font-variant:small-caps; font-size: x-large;">Professional Experience</span>
+            <span class="expand" onclick="expand(this)">Expand All</span>
+            <div id="scroller">
+                <span id="scroller-skill-name">Skill Name</span>
+                <span id='prior-highlight' class="action" onclick="prev_highlight()">
+                    <span class="button">&#x2B9D;</span>
+                </span> 
+                <span id='next-highlight' class="action" onclick="next_highlight()">
+                    <span class="button">&#x2B9F;</span>
+                </span>
+                <span id="skill-count">1</span>/<span id="total-skill-highlights">N</span>
+                <span id="'close-scroller" class="action button" onclick="close_scroller()">&#x1F5D9</span>
+            </div>
+            <div>
+                {% assign company = "" %}
+                {% for job in site.data.jobs %}
+                {% assign j = job[1] %}
+                {% if company != j.company %}
+                    {% if company != "" %}
+                        <br></div></div>
+                    {% endif %}
+                    
+                    {% assign company = j.company %}
+                    {% for c in site.data.companies %}
+                        {% if c[0] == company %}
+                            {% assign comp = c[1] %}
+                            <div class="company-card" style="border-left: 5px solid {{comp.border-color}};">
+                                <div style="margin: 20px; padding: 10px;">
+                                <span style="font-size: large; color:black">
+                                <a href="{{comp.website}}" target="_blank"><strong>{{comp.name}}</strong><!--<img src="{{comp.logo}}" width="200" alt="{{comp.name}}"/>--></a>
+                                </span>
+                            <br>
+                            <div>{{comp.blurb}}</div>
+                            </div>
+                            <div class="positions">
+
+                        {% endif %}
+                    {% endfor %}
 
                 {% endif %}
-            {% endfor %}
-
-        {% endif %}
-            <div class="box">
-                <strong>{{j.title}}</strong>
-                <span class="dates">
-                    <em>{{j.start-date}} - {% if j.end-date==""%}Present{% else%}{{j.end-date}}{%endif%}</em>
-                </span>              
-                <br>
-                {{ j.short }} 
-                <span class="description"><br>{{ j.description }}</span> <br><span class="expand" onclick="expand(this)">More</span>
-            </div>
-        {% endfor %}
-        </div>
-        <h3>Education</h3>
-        <div class="box">
-            <strong>Bachelor of Science Degree in Electrical Engineering</strong>
+                    <div class="box">
+                        <strong>{{j.role}}</strong>
+                        <span class="dates">
+                            <em>{{j.time-in-role}}</em>
+                        </span>              
+                        <br>
+                        {{ j.short }} 
+                        <span class="description">
+                            <br><br>
+                            {% for p in j.position %}
+                                <em>{{ p.title }}  - {{p.location}}
+                                    <span class="dates">{{p.start-date}} - {% if p.end-date==""%}Present{% else%}{{p.end-date}}{%endif%}</span></em> <br>
+                            {% endfor %}
+                            <hr>
+                            <span>
+                                {% for line in j.description %}
+                                    <span><span class='detail' skill="{{line.skill}}">{{ line.text }}</span></span>
+                                {% endfor %}
+                            </span>
+                            
+                            <ul style="margin-bottom: 0;">
+                            {% for accomplishment in j.accomplishments %}
+                                <li><span class='detail' skill="{{accomplishment.skill}}">{{accomplishment.text}}</span></li>
+                            {% endfor %}
+                            </ul>
+                        </span> <br><span class="expand" onclick="expand(this)">More</span>
+                    </div>
+                {% endfor %}
             <br>
-            California Polytechnic State University, San Luis Obispo
+            </div>
+            </div>
+            <h3>Education</h3>
+            <div class="company-card" style="padding: 1em;">
+                <strong>Bachelor of Science Degree in Electrical Engineering</strong> <span class="dates"><em>2011</em></span>
+                <br>
+                California Polytechnic State University, San Luis Obispo
+            </div>
+            
         </div>
-
     </body>
 </html>
