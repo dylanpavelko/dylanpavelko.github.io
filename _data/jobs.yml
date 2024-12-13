@@ -11,18 +11,17 @@ workday-pm-manager:
     - text: Leading product teams focused on delivering high-quality, consumer-based student user experiences, and sophisticated back-office processing for administrators to uphold institutional academic policies. 
       skill: leadership
     - text: Responsible for the Curriculum Management, Student Registration, and Academic Advising product lines, spearheading all related strategic initiatives.
-      skill: strategy
   accomplishments:
     - text: Manage, hire, coach, and retain a team of product managers across all levels of seniority, based in offices across North America, each owning their own product portfolio and roadmap.
-      skill: leadership
+      skill: leadership, functional
     - text: Establish clear, high-value, focused objectives and key results (OKRs) to empower teams to move more autonomously towards a shared vision with accountability. 
-      skill: strategy
+      skill: strategy, data
     - text: Lead in a “player-coach” capacity, rolling up my sleeves to help teams cross the finish line.
-      skill: strategy
+      skill: leadership
     - text: Manage internal and external escalations aligning stakeholders to quickly unblock work.
-      skill: strategy
+      skill: leadership, customers
     - text: Delivered 211 customer-facing features to production over five six-month release cycles.
-      skill: strategy
+      skill: pm, operations
   company: workday
 workday-func-arch:
   role: "Product Functional Architect"
@@ -41,10 +40,15 @@ workday-func-arch:
     - text: Selected as Workday Student’s first Functional Architect, where I defined the role and responsibilities for the position.
   accomplishments:
     - text: Led functional design and coordination across 30+ scrum teams for three distinct multi-year initiatives aimed at significantly increasing product-market fit.
+      skill: functional, operations
     - text: Mentored other product managers on how to represent the voice of the customer while balancing technical, design, and business trade-offs.
+      skill: leadership, pm
     - text: Served as part of the senior leadership team, regularly representing the organization externally as a subject matter expert, including in contract negotiations.
+      skill: customers
     - text: Led discovery to identify top machine learning/AI use cases for higher education industry.
+      skill: strategy
     - text: Selected as organization's sole representative to act a Culture Ambassador, ensuring candidates would be 'culture-adds' and refrain from office politics. Participated in every interview across Development, QA, and Product Management roles for over a two-year period. 
+      skill: leadership
   company: workday
 workday-strategy-director:
   role: "Product Strategy Director"
@@ -60,10 +64,15 @@ workday-strategy-director:
       skill: "strategy"
   accomplishments:
     - text: Partnered with product marketing, value management, and competitive intelligence teams to ensure the sales team was equipped with the right positioning to maximize subscription sales.
+      skill: strategy
     - text: Led product adoption analytics project to make data-driven decisions for over 800 features.
+      skill: data, leadership
     - text: Led an Australian market-fit customer discovery project for two years that included two multi-day, in-person workshops. This work led to the opening of new markets for Workday.
+      skill: customers, strategy
     - text: Partnered with the corporate finance team to define multi-year profitability plans.
+      skill: data
     - text: Represented the organization externally by leading sessions at industry analyst briefings, industry conferences, and customer executive advisory council meetings.
+      skill: customers
     - text: Evaluated new technologies to identify opportunities for introducing new product offerings.
   company: workday
 workday-product-manager:
@@ -81,20 +90,32 @@ workday-product-manager:
   short: A founding member of the product management team responsible for creating the first cloud-based Student Information System for higher education. 
   description: 
     - text: Developed strong product instincts by assuming any role necessary to ensure success. 
+      skill: pm, operations
     - text: Workday Student operated as a B2B startup within a larger parent company, starting with zero lines of code and zero customers.
   accomplishments:
     - text: Conducted extensive customer sessions to help inform the product vision and requirements.
+      skill: customers, strategy
     - text: Hosted virtual and on-site user research studies to validate product risks and assumptions.
-    - text: Cultivated deep partnerships of trust with engineers and designers to create iterative, confidence building product experiments with early customers and enabled pre-launch growth.
+      skill: pm
+    - text: Cultivated deep partnerships of trust with engineers and designers to create iterative, confidence-building product experiments with early customers and enabled pre-launch growth.
+      skill: pm, data
     - text: Led all product owner related scrum activities associated with agile software development.
+      skill: pm
     - text: Facilitated collaborative brainstorming with peer product managers to foster innovation.
+      skill: functional
     - text: Applied systems thinking to develop several adaptable platform frameworks that allowed Workday to scale to meet diverse business requirements.
+      skill: functional
     - text: Designed and continuously iterated on consumer-based experiences, focusing on customers’ needs while ensuring scalability for the product vision and larger customers.
+      skill: pm
     - text: Owned multiple product roadmaps to balance the long-term strategic vision with short-term MVP requirements.
+      skill: pm
     - text: Communicated product updates to external and internal executives, including the company CEO.
+      skill: pm
     - text: Created and delivered initial training materials for service partners to implement new products.
     - text: Represented the organization at industry events, conferences, and software partner meetings.
+      skill: customers
     - text: Acted as a trusted early adopter of proposed process changes to ensure operational efficiency.
+      skill: operations
   company: workday
 workday-automation-engineer:
   role: "Test Automation Engineer"
@@ -114,6 +135,7 @@ workday-automation-engineer:
   accomplishments:
     - text: Collaborated with framework development teams to enhance and pilot testing frameworks.
     - text: Supported the organization’s transition from a waterfall to an agile development methodology. 
+      skill: operations
     - text: Awarded the inaugural company-wide “Golden Bug” quality assurance award.
   company: workday
 mindbody-automated-test-developer:

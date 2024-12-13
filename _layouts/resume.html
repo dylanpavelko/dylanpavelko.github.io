@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
         <title>Dylan Pavelko's CV</title>
         <style>
             body{
                 background-color: #D7D2CB;
+                /* font-family: "EB Garamond"; */
             }
 
             a{
@@ -48,9 +52,18 @@
             }
 
             #scroller{
-                color: darkslategray;
+                color: black;
                 position: absolute;
                 z-index: 1;
+                border-radius: 25px;
+                margin-left: -25px;
+                padding: 0.5em;
+                padding-right: 15px;
+                padding-left: 15px;
+                background-color: #37ce6c;
+                position: fixed;
+                visibility: hidden;
+                /* transition: ease all .5s; */
             }
             .action{
                 color: black;
@@ -58,11 +71,36 @@
             .skill-pill:hover, .action:hover{
                 background-color: #37ce6c;
                 cursor: pointer;   
+                color: black;
 
             }
             .skill-pill:hover{
                 border: 2px solid white;
             }
+
+
+            #scroller .button{
+                color: grey;
+            }
+
+            #scroller .action .button{
+                color: black;
+            }
+
+            #scroller .action:hover{
+                color: white;
+            }
+
+
+            #scroller .action .button:hover{
+                color: white;
+            }
+
+
+            #scroller .action{
+                color: black;
+            }
+            
             .button{
                 margin-left: 0.5em;
                 margin-right: 0.5em;
@@ -73,14 +111,6 @@
 
             .highlight{
                 background-color: #37ce6c;
-            }
-
-            #scroller{
-                padding: 0.5em;
-                background-color: darkgray;
-                position: fixed;
-                visibility: hidden;
-                /* transition: ease all .5s; */
             }
 
             .description{
@@ -162,9 +192,12 @@
 
                 //step two - highlight selected skill pill
                   //need better color contrast here to do this work
+                element.style.backgroundColor = "#37ce6c";
+                element.style.color = "black";
+
 
                 //step three - find any relevant skill details
-                skill_highlights = document.querySelectorAll('[skill='+skill+']');
+                skill_highlights = document.querySelectorAll('[skill*='+skill+']');
 
 
                 //step four - expand and highlight skill details
@@ -181,7 +214,7 @@
                 })
 
                 //step four b set skill name and skill count
-                document.getElementById("scroller-skill-name").innerHTML = element.innerHTML;
+                document.getElementById("scroller-skill-name").innerHTML = element.innerHTML.slice(0, -3);
                 document.getElementById("total-skill-highlights").innerHTML=skill_highlights.length;
 
                 //step four c open skill summary
@@ -275,14 +308,18 @@
                 // document.getElementById("scroller").style.transition = "ease all .5s";
 
                 unhilight_all();
-
-                //consider first setting transition to 0 and then setting it back to 0.5 after close
             }
 
             function unhilight_all(){
                 skill_highlights.forEach( text => {
                     text.classList.remove('highlight');
                 })
+
+                //deselect any previous highlighted skill pills
+                pills = document.getElementsByClassName("skill-pill");
+                    [...pills].forEach( pill => {
+                        pill.style = "";
+                    })
             }
 
             function expand(element){
@@ -320,41 +357,86 @@
         {{ content }}
         <div id="heading">
             <div id="heading-content">
-                <img id="headshot" src="https://media.licdn.com/dms/image/v2/C4D03AQGBIbwVLWPV1Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1516505881817?e=1736985600&v=beta&t=KSJReHtHetHRW4jzYU0ck8kJx4TW9dcPmf9gcrJH340">
-                <h1>Dylan Pavelko</h1>
+                <div style="text-align: center;">
+                    <img id="headshot" style="max-width: 250px;" src="https://media.licdn.com/dms/image/v2/C4D03AQGBIbwVLWPV1Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1516505881817?e=1736985600&v=beta&t=KSJReHtHetHRW4jzYU0ck8kJx4TW9dcPmf9gcrJH340">
+                </div>
+                <h1 style="font-variant:small-caps;">Dylan Pavelko</h1>
+                <p>
+                    <em>Dylan Pavelko has more than a decade of product leadership experience with emerging software products.</em></p>
                 <a href="https://www.linkedin.com/in/dylanpavelko" target="_blank">Contact via LinkedIn</a>
+                
                 <h3>Interactive Highlighted Skills</h3>
                 <!-- go through all descriptions and accomplishments for each job and track number of each skill -->
                 {% assign pm_skill_count = 0 %}
                 {% assign leadership_skill_count = 0 %}
                 {% assign strategy_skill_count = 0 %}
+                {% assign data_skill_count = 0 %}
+                {% assign functional_skill_count = 0 %}
+                {% assign operations_skill_count = 0 %}
+                {% assign customers_skill_count = 0 %}
                 {% for job in site.data.jobs %}
                     {% assign j = job[1] %}
                     {% for line in j.description %}
-                        {% if line.skill == "pm" %}
+                        {% if line.skill contains "pm" %}
                             {% assign pm_skill_count = pm_skill_count | plus: 1%}
-                        {% elsif line.skill == "leadership" %}
+                        {% endif %}
+                        {% if line.skill contains "leadership" %}
                             {% assign leadership_skill_count = leadership_skill_count | plus: 1%}
-                        {% elsif line.skill == "strategy" %}
+                        {% endif %}
+                        {% if line.skill contains "strategy" %}
                             {% assign strategy_skill_count = strategy_skill_count | plus: 1%}
+                        {% endif %}
+                        {% if line.skill contains "data" %}
+                            {% assign data_skill_count = data_skill_count | plus: 1%}
+                        {% endif %}
+                        {% if line.skill contains "functional" %}
+                            {% assign functional_skill_count = functional_skill_count | plus: 1%}
+                        {% endif %}
+                        {% if line.skill contains "operations" %}
+                            {% assign operations_skill_count = operations_skill_count | plus: 1%}
+                        {% endif %}
+                        {% if line.skill contains "customers" %}
+                            {% assign customers_skill_count = customers_skill_count | plus: 1%}
                         {% endif %}
                     {% endfor %}
                     {% for accomplishment in j.accomplishments %}
-                        {% if accomplishment.skill == "pm" %}
+                        {% if accomplishment.skill contains "pm" %}
                             {% assign pm_skill_count = pm_skill_count | plus: 1%}
-                        {% elsif accomplishment.skill == "leadership" %}
+                        {% endif %}
+                        {% if accomplishment.skill contains "leadership" %}
                             {% assign leadership_skill_count = leadership_skill_count | plus: 1%}
-                        {% elsif accomplishment.skill == "strategy" %}
+                        {% endif %}
+                        {% if accomplishment.skill contains "strategy" %}
                             {% assign strategy_skill_count = strategy_skill_count | plus: 1%}
+                        {% endif %}
+                        {% if accomplishment.skill contains "data" %}
+                            {% assign data_skill_count = data_skill_count | plus: 1%}
+                        {% endif %}
+                        {% if accomplishment.skill contains "functional" %}
+                            {% assign functional_skill_count = functional_skill_count | plus: 1%}
+                        {% endif %}
+                        {% if accomplishment.skill contains "operations" %}
+                            {% assign operations_skill_count = operations_skill_count | plus: 1%}
+                        {% endif %}
+                        {% if accomplishment.skill contains "customers" %}
+                            {% assign customers_skill_count = customers_skill_count | plus: 1%}
                         {% endif %}
                     {% endfor %}
                 {% endfor %}
                 <div>
                     <span class="skill-pill" onclick="skill_highlight(this,'pm')">Product Management ({{pm_skill_count}})</span>
-                    <span class="skill-pill" onclick="skill_highlight(this,'leadership')">Leadership ({{leadership_skill_count}})</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'leadership')">Leading Teams ({{leadership_skill_count}})</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'customers')">Customer Relationship Building ({{customers_skill_count}})</span>
                     <span class="skill-pill" onclick="skill_highlight(this,'strategy')">Product Strategy ({{strategy_skill_count}})</span>
-                    <span class="skill-pill">Product Design</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'operations')">Operations ({{operations_skill_count}})</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'data')">Data-Driven ({{data_skill_count}})</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'functional')">Cross-Functional ({{functional_skill_count}})</span>
+
                 </div>
+                <br>
+                <h3>Printable Two-Page Résumé</h3>
+                Download PDF
+
             </div>
         </div>
         <div id="main">
@@ -429,11 +511,42 @@
             <br>
             </div>
             </div>
-            <h3>Education</h3>
+            <br><br>
+            <span style="font-variant:small-caps; font-size: x-large;">Education</span><br><br>
             <div class="company-card" style="padding: 1em;">
-                <strong>Bachelor of Science Degree in Electrical Engineering</strong> <span class="dates"><em>2011</em></span>
+                <div class="box">
+                    <strong>Bachelor of Science Degree in Electrical Engineering</strong> <span class="dates"><em>2011</em></span>
                 <br>
                 California Polytechnic State University, San Luis Obispo
+                </div>
+                <div class="box">
+                    <strong>Continuing Education</strong><br>
+                    Data8.1x—Data Science: Computational Thinking with Python via edX/BerkeleyX<span class="dates"><em>2019</em></span><br>
+                    <em>Topics: Python, Jupyter Notebooks, pandas, Matplotlib</em><br>
+                    <br>
+                    Machine Learning Certificate with Andrew Ng via Coursera/Stanford<span class="dates"><em>2020</em></span><br>
+                    <em>Topics: Linear Regression, Logistic Regression, Neural Networks, Learning Curves</em>
+                </div>
+            </div>
+            <br><br>
+            <span style="font-variant:small-caps; font-size: x-large;">Tools & Skills</span><br><br>
+            <div class="company-card" style="padding: 1em;">
+                <div class="box">
+                    <strong>Product Management:</strong><br>
+                    Story Mapping, Prioritization Frameworks (RICE,  MoSCoW, Weighted Scoring), G/W/T Acceptance Criteria, Agile/Scrum, Wire-frames, A/B Research Testing<br>
+                </div>
+                <div class="box">
+                    <strong>Collaboration Tools:</strong><br> Jira, Confluence, Miro, Figma, Microsoft Office, Google Docs/Sheets/Slides
+                </div>
+                <div class="box">
+                    <strong>Web Development & Programming Languages:</strong><br>Python, Ruby, Java, C, HTML, CSS, JavaScript, Django, Rails, Jekyll
+                </div>
+                <div class="box">
+                    <strong>Data Analysis Tools:</strong><br>Jupyter Notebooks, SQL, Mixpanel, Excel/Google Sheets, Tableau
+                </div>
+                <div class="box">
+                    <strong>Personal:</strong><br>Beekeeping, Gardening, Home Automation, Yoga
+                </div>
             </div>
             <br>
             <div id="copyright">&#169; 2024 Dylan Pavelko</div>
