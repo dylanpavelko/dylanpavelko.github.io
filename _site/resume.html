@@ -11,6 +11,10 @@
                 color: black;
             }
 
+            #heading a {
+                color: white;
+            }
+
             a[target="_blank"]::after {
                 content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
                 margin: 0 3px 0 5px;
@@ -76,7 +80,7 @@
                 background-color: darkgray;
                 position: fixed;
                 visibility: hidden;
-                transition: ease all .5s;
+                /* transition: ease all .5s; */
             }
 
             .description{
@@ -91,6 +95,12 @@
             }
             .expand:hover{
                 text-decoration: underline;
+            }
+
+            #copyright{
+                color: rgb(70, 70, 70);
+                text-align: center;
+                margin: 20px
             }
 
             #headshot {
@@ -121,7 +131,7 @@
             #main {
                 display: inline-block;
                 margin-left: 30%;
-                transition: ease all .5s;
+                /* transition: ease all .5s; */
                 max-width: 850px;
                 margin-top: 50px;
             }
@@ -162,7 +172,12 @@
                     text.parentElement.parentElement.parentElement.style.display = "inline";
                     text.classList.add('highlight');
 
-                    //TODO: need to change 'More' to 'Less on these expanded sections'
+                    //Change 'More' to 'Less on these expanded sections'
+                    mores = text.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("expand");
+                    [...mores].forEach( more => {
+                        more.innerHTML = "Less";
+                    })
+
                 })
 
                 //step four b set skill name and skill count
@@ -255,7 +270,10 @@
             }
 
             function close_scroller(){
+                // document.getElementById("scroller").style.transition = "initial";
                 document.getElementById("scroller").style.visibility = "hidden";
+                // document.getElementById("scroller").style.transition = "ease all .5s";
+
                 unhilight_all();
 
                 //consider first setting transition to 0 and then setting it back to 0.5 after close
@@ -307,10 +325,15 @@
                 <h1>Dylan Pavelko</h1>
                 <a href="https://www.linkedin.com/in/dylanpavelko" target="_blank">Contact via LinkedIn</a>
                 <h3>Interactive Highlighted Skills</h3>
+                <!-- go through all descriptions and accomplishments for each job and track number of each skill -->
+                
+                
+                
+                
                 <div>
-                    <span class="skill-pill" onclick="skill_highlight(this,'pm')">Product Management (1)</span>
-                    <span class="skill-pill" onclick="skill_highlight(this,'leadership')">Leadership</span>
-                    <span class="skill-pill" onclick="skill_highlight(this,'strategy')">Product Strategy (2)</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'pm')">Product Management (0)</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'leadership')">Leadership (2)</span>
+                    <span class="skill-pill" onclick="skill_highlight(this,'strategy')">Product Strategy (6)</span>
                     <span class="skill-pill">Product Design</span>
                 </div>
             </div>
@@ -346,8 +369,7 @@
                                 <a href="https://www.workday.com" target="_blank"><strong>Workday</strong><!--<img src="https://logos-world.net/wp-content/uploads/2021/03/Workday-Logo.png" width="200" alt="Workday"/>--></a>
                                 </span>
                             <br>
-                            <div>Product & People Leader. Helpled Workday scale from a pre-IPO company of less than 1,000 employees making $274M in revenue to an over 18,000 employee <a href='https://fortune.com/2024/06/05/fortune-500-workday-hr-software-company-debut/'' target='_blank'>Fortune 500</a> company making over $8B in annual revenue.
-Workday is a leading enterprise software platform that helps organizations manage their most important assets – their people and money. </div>
+                            <div>Dylan Pavelko has more than a decade of product leadership experience with emerging software products. He helped Workday grow from a pre-IPO company of fewer than 1,000 employees generating $274M to an 18,000+ employee, <a href='https://fortune.com/2024/06/05/fortune-500-workday-hr-software-company-debut/'' target='_blank'>Fortune 500</a> company making over $8B in annual revenue.<br>Workday is a leading enterprise software platform that helps organizations manage their most important assets – their people and money. </div>
                             </div>
                             <div class="positions">
 
@@ -363,7 +385,7 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <em>2.6 years</em>
                         </span>              
                         <br>
-                        Passionate about building high performing product management teams focused on delivering results. 
+                        Passionate about building high-performing product management teams focused on delivering results. 
                         <span class="description">
                             <br><br>
                             
@@ -373,15 +395,23 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <hr>
                             <span>
                                 
-                                    <span><span class='detail' skill=""></span></span>
+                                    <span><span class='detail' skill="leadership">Leading product teams focused on delivering high-quality, consumer-based student user experiences, and sophisticated back-office processing for administrators to uphold institutional academic policies.</span></span>
+                                
+                                    <span><span class='detail' skill="strategy">Responsible for the Curriculum Management, Student Registration, and Academic Advising product lines, spearheading all related strategic initiatives.</span></span>
                                 
                             </span>
                             
                             <ul style="margin-bottom: 0;">
                             
-                                <li><span class='detail' skill="leadership">Manage, coach, hire, and retain a team of product managers across all levels of seniority who each own their own product portfolio and roadmap.</span></li>
+                                <li><span class='detail' skill="leadership">Manage, hire, coach, and retain a team of product managers across all levels of seniority, based in offices across North America, each owning their own product portfolio and roadmap.</span></li>
                             
-                                <li><span class='detail' skill="leadership">Formally manage six product managers leading work spread across 10 scrum teams comprised of 60+ team members</span></li>
+                                <li><span class='detail' skill="strategy">Establish clear, high-value, focused objectives and key results (OKRs) to empower teams to move more autonomously towards a shared vision with accountability.</span></li>
+                            
+                                <li><span class='detail' skill="strategy">Lead in a “player-coach” capacity, rolling up my sleeves to help teams cross the finish line.</span></li>
+                            
+                                <li><span class='detail' skill="strategy">Manage internal and external escalations aligning stakeholders to quickly unblock work.</span></li>
+                            
+                                <li><span class='detail' skill="strategy">Delivered 211 customer-facing features to production over five six-month release cycles.</span></li>
                             
                             </ul>
                         </span> <br><span class="expand" onclick="expand(this)">More</span>
@@ -395,7 +425,7 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <em>2.6 years</em>
                         </span>              
                         <br>
-                        Nicknamed "The PM Whisperer" for my ability to successfully lead initiatives across diverse teams to ensure the growth and scalability of Workday Student. 
+                        Nicknamed "The PM Whisperer" for my ability to successfully lead initiatives across diverse teams and ensure the scalability of Workday Student. 
                         <span class="description">
                             <br><br>
                             
@@ -408,15 +438,21 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <hr>
                             <span>
                                 
-                                    <span><span class='detail' skill="">Cross Functional Individual Contributor Leadership role where I led cross scrum-team functional design and coordination for initiatives to ensure growth and scalability of Workday Student.</span></span>
-                                
-                                    <span><span class='detail' skill="">Organized and led large-scale, multi-team, cross-functional, initiatives that span across functional areas; Identify top use cases that could employ machine learning. </span></span>
+                                    <span><span class='detail' skill="">Selected as Workday Student’s first Functional Architect, where I defined the role and responsibilities for the position.</span></span>
                                 
                             </span>
                             
                             <ul style="margin-bottom: 0;">
                             
-                                <li><span class='detail' skill="leadership">Selected as organization's sole representitive to act a Culture Ambassador to be a required component of all Workday interviews ensuring candidates would be 'culture adds' to Workday and avoid office politics. Participated in every interview across Dev/QA/PM roles for 2 year period.</span></li>
+                                <li><span class='detail' skill="">Led functional design and coordination across 30+ scrum teams for three distinct multi-year initiatives aimed at significantly increasing product-market fit.</span></li>
+                            
+                                <li><span class='detail' skill="">Mentored other product managers on how to represent the voice of the customer while balancing technical, design, and business trade-offs.</span></li>
+                            
+                                <li><span class='detail' skill="">Served as part of the senior leadership team, regularly representing the organization externally as a subject matter expert, including in contract negotiations.</span></li>
+                            
+                                <li><span class='detail' skill="">Led discovery to identify top machine learning/AI use cases for higher education industry.</span></li>
+                            
+                                <li><span class='detail' skill="">Selected as organization's sole representative to act a Culture Ambassador, ensuring candidates would be 'culture-adds' and refrain from office politics. Participated in every interview across Development, QA, and Product Management roles for over a two-year period.</span></li>
                             
                             </ul>
                         </span> <br><span class="expand" onclick="expand(this)">More</span>
@@ -430,7 +466,7 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <em>2.2 years</em>
                         </span>              
                         <br>
-                        Led initiatives to quantify and assess global market and investment opportunities. next chapter of growth 
+                        Crafted product visions that drove value for Workday and it’s customers by balancing big-picture thinking with detailed analysis to evaluate new technologies and market opportunities. 
                         <span class="description">
                             <br><br>
                             
@@ -440,27 +476,23 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <hr>
                             <span>
                                 
-                                    <span><span class='detail' skill="strategy">Present at Industry Analyst Briefings</span></span>
-                                
-                                    <span><span class='detail' skill="">And something else</span></span>
+                                    <span><span class='detail' skill="strategy">Played a key role in defining the next chapter of growth by leading initiatives to quantify and assess over $950M in annual recurring revenue from global market opportunities.</span></span>
                                 
                             </span>
                             
                             <ul style="margin-bottom: 0;">
                             
-                                <li><span class='detail' skill="strategy">Develop and position the vision and priorities for Workday Student to maximize success for our customers</span></li>
+                                <li><span class='detail' skill="">Partnered with product marketing, value management, and competitive intelligence teams to ensure the sales team was equipped with the right positioning to maximize subscription sales.</span></li>
                             
-                                <li><span class='detail' skill="">Perform country specific addressable market analysis of Annual Recurring Revenue (ARR) to evaluate global expansion</span></li>
+                                <li><span class='detail' skill="">Led product adoption analytics project to make data-driven decisions for over 800 features.</span></li>
                             
-                                <li><span class='detail' skill="">Collaborate with Product Marketing and Competitive Intelligence teams to maximize subscription sales</span></li>
+                                <li><span class='detail' skill="">Led an Australian market-fit customer discovery project for two years that included two multi-day, in-person workshops. This work led to the opening of new markets for Workday.</span></li>
                             
-                                <li><span class='detail' skill="">Partnered with Corporate Finance to define multi-year plan</span></li>
+                                <li><span class='detail' skill="">Partnered with the corporate finance team to define multi-year profitability plans.</span></li>
                             
-                                <li><span class='detail' skill="">Leading product adoption analytics project to drive better data-driven decision making for over 800 features</span></li>
+                                <li><span class='detail' skill="">Represented the organization externally by leading sessions at industry analyst briefings, industry conferences, and customer executive advisory council meetings.</span></li>
                             
-                                <li><span class='detail' skill="">Leading cross-organizational customer group to model the intersection of enrollment planning with budget planning</span></li>
-                            
-                                <li><span class='detail' skill="strategy">Global and leveraging new technologies to unlock new growth opportunities</span></li>
+                                <li><span class='detail' skill="">Evaluated new technologies to identify opportunities for introducing new product offerings.</span></li>
                             
                             </ul>
                         </span> <br><span class="expand" onclick="expand(this)">More</span>
@@ -474,7 +506,7 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <em>4 years</em>
                         </span>              
                         <br>
-                        A founding member of the PM team responsible for creating the first cloud-based Student Information System. 
+                        A founding member of the product management team responsible for creating the first cloud-based Student Information System for higher education. 
                         <span class="description">
                             <br><br>
                             
@@ -487,13 +519,37 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <hr>
                             <span>
                                 
-                                    <span><span class='detail' skill="pm">As a product manager I worked with industry design partners, customers, and functional experts to create innovative solutions for Higher Educational Institutions.</span></span>
+                                    <span><span class='detail' skill="">Developed strong product instincts by assuming any role necessary to ensure success.</span></span>
                                 
-                                    <span><span class='detail' skill="">Using an agile development methodology I collaborated on the design and development of the product with Workday Application Developers, User Experience Engineers & Researchers, and QA Engineers; in addition, I represented the product to any teams outside of our development organization. I was the founding Product Management Lead for Campus Engagement, and Academic Advising (leading those products through their respective General Availability releases) as well as playing an integral role to the development of the Student Records product.</span></span>
+                                    <span><span class='detail' skill="">Workday Student operated as a B2B startup within a larger parent company, starting with zero lines of code and zero customers.</span></span>
                                 
                             </span>
                             
                             <ul style="margin-bottom: 0;">
+                            
+                                <li><span class='detail' skill="">Conducted extensive customer sessions to help inform the product vision and requirements.</span></li>
+                            
+                                <li><span class='detail' skill="">Hosted virtual and on-site user research studies to validate product risks and assumptions.</span></li>
+                            
+                                <li><span class='detail' skill="">Cultivated deep partnerships of trust with engineers and designers to create iterative, confidence building product experiments with early customers and enabled pre-launch growth.</span></li>
+                            
+                                <li><span class='detail' skill="">Led all product owner related scrum activities associated with agile software development.</span></li>
+                            
+                                <li><span class='detail' skill="">Facilitated collaborative brainstorming with peer product managers to foster innovation.</span></li>
+                            
+                                <li><span class='detail' skill="">Applied systems thinking to develop several adaptable platform frameworks that allowed Workday to scale to meet diverse business requirements.</span></li>
+                            
+                                <li><span class='detail' skill="">Designed and continuously iterated on consumer-based experiences, focusing on customers’ needs while ensuring scalability for the product vision and larger customers.</span></li>
+                            
+                                <li><span class='detail' skill="">Owned multiple product roadmaps to balance the long-term strategic vision with short-term MVP requirements.</span></li>
+                            
+                                <li><span class='detail' skill="">Communicated product updates to external and internal executives, including the company CEO.</span></li>
+                            
+                                <li><span class='detail' skill="">Created and delivered initial training materials for service partners to implement new products.</span></li>
+                            
+                                <li><span class='detail' skill="">Represented the organization at industry events, conferences, and software partner meetings.</span></li>
+                            
+                                <li><span class='detail' skill="">Acted as a trusted early adopter of proposed process changes to ensure operational efficiency.</span></li>
                             
                             </ul>
                         </span> <br><span class="expand" onclick="expand(this)">More</span>
@@ -507,7 +563,7 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <em>1.8 years</em>
                         </span>              
                         <br>
-                        Coded frameworks to support automated regression testing 
+                        Developed and maintained automated regression testing using a blend of proprietary and open-source automated testing frameworks, including Selenium and SoapUI. 
                         <span class="description">
                             <br><br>
                             
@@ -520,11 +576,17 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <hr>
                             <span>
                                 
-                                    <span><span class='detail' skill=""></span></span>
+                                    <span><span class='detail' skill="">Led automation for Workday’s Time Tracking, Absence Management, Canadian Payroll and U.S. Payroll products.</span></span>
                                 
                             </span>
                             
                             <ul style="margin-bottom: 0;">
+                            
+                                <li><span class='detail' skill="">Collaborated with framework development teams to enhance and pilot testing frameworks.</span></li>
+                            
+                                <li><span class='detail' skill="">Supported the organization’s transition from a waterfall to an agile development methodology.</span></li>
+                            
+                                <li><span class='detail' skill="">Awarded the inaugural company-wide “Golden Bug” quality assurance award.</span></li>
                             
                             </ul>
                         </span> <br><span class="expand" onclick="expand(this)">More</span>
@@ -548,7 +610,7 @@ Workday is a leading enterprise software platform that helps organizations manag
                                 <a href="https://www.mindbodyonline.com/" target="_blank"><strong>Mindbody</strong><!--<img src="https://clipground.com/images/mindbody-logo-8.png" width="200" alt="Mindbody"/>--></a>
                                 </span>
                             <br>
-                            <div></div>
+                            <div>Software-as-a-service company that provides cloud-based business management software for the wellness services industry.</div>
                             </div>
                             <div class="positions">
 
@@ -562,7 +624,7 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <em>6 months</em>
                         </span>              
                         <br>
-                        Developed automated regression system tests and tooling. 
+                        Developed automated system regression tests for Mindbody’s online B2B platform serving over 10,000+  customers. 
                         <span class="description">
                             <br><br>
                             
@@ -572,11 +634,15 @@ Workday is a leading enterprise software platform that helps organizations manag
                             <hr>
                             <span>
                                 
-                                    <span><span class='detail' skill=""></span></span>
+                                    <span><span class='detail' skill="">Mindbody provides cloud-based business management software for the wellness industry.</span></span>
                                 
                             </span>
                             
                             <ul style="margin-bottom: 0;">
+                            
+                                <li><span class='detail' skill="">Created automated system regression tests for consumer-facing storefront experience using Selenium WebDriver in Java.</span></li>
+                            
+                                <li><span class='detail' skill="">Designed, developed, and delivered an internal tool that enabled QA Engineers to more efficiently regression test user experience changes.</span></li>
                             
                             </ul>
                         </span> <br><span class="expand" onclick="expand(this)">More</span>
@@ -591,7 +657,8 @@ Workday is a leading enterprise software platform that helps organizations manag
                 <br>
                 California Polytechnic State University, San Luis Obispo
             </div>
-            
+            <br>
+            <div id="copyright">&#169; 2024 Dylan Pavelko</div>
         </div>
     </body>
 </html>
