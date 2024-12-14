@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
         <title>Dylan Pavelko's CV</title>
         <style>
             body{
@@ -21,6 +19,12 @@
 
             a[target="_blank"]::after {
                 content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAQElEQVR42qXKwQkAIAxDUUdxtO6/RBQkQZvSi8I/pL4BoGw/XPkh4XigPmsUgh0626AjRsgxHTkUThsG2T/sIlzdTsp52kSS1wAAAABJRU5ErkJggg==);
+                margin: 0 3px 0 5px;
+            }
+
+            #heading a[target="_blank"]::after {
+                test: "here";
+                content: url('white_external.png');
                 margin: 0 3px 0 5px;
             }
 
@@ -153,6 +157,7 @@
                 height: 100%;
                 transition: ease all .5s;
                 box-shadow: inset 0px 0px 10px rgba(0,0,0,0.3);
+                overflow-y: scroll;
             }
 
             #heading-content {
@@ -174,8 +179,14 @@
                 }
 
                 #main {
-                    width: 100%;
+                    width: 95%;
+                    margin-left: .25em;
+                    margin-right: .25em;
                 }
+
+                body{
+                    margin: 0;
+                };
             }
 
         </style>
@@ -435,7 +446,7 @@
                 </div>
                 <br>
                 <h3>Printable Two-Page Résumé</h3>
-                Download PDF
+                <a href="DylanPavelkoCV.pdf" target="_blank">Download PDF</a>
 
             </div>
         </div>
@@ -517,7 +528,8 @@
                 <div class="box">
                     <strong>Bachelor of Science Degree in Electrical Engineering</strong> <span class="dates"><em>2011</em></span>
                 <br>
-                California Polytechnic State University, San Luis Obispo
+                California Polytechnic State University, San Luis Obispo<br>
+                <em>Activities: College of Engineering Student Council President, Theatrical Stage Lighting Designer</em>
                 </div>
                 <div class="box">
                     <strong>Continuing Education</strong><br>
