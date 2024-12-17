@@ -191,6 +191,10 @@
                 #scroller{
                     margin-left: 0px;
                 }
+
+                .role{
+                    width:  100%;
+                }
             }
 
         </style>
@@ -273,7 +277,7 @@
                     highlight = skill_highlights[highlight_index]
                     if(small_window){
                         header = document.getElementById("heading");
-                        header_height = header.offsetTop + header.offsetHeight;
+                        header_height = header.offsetTop + header.offsetHeight +16;
                     }
                     else{
                         header_height = 0;
@@ -520,9 +524,13 @@
 
                 {% endif %}
                     <div class="box">
-                        <strong>{{j.role}}</strong>
-                        <span class="dates">
-                            <em>{{j.time-in-role}}</em>
+                        <span class="role">
+                            <span class="title">
+                                <strong>{{j.role}}</strong>
+                            </span>
+                            <span class="dates">
+                                <em>{{j.time-in-role}}</em>
+                            </span>
                         </span>              
                         <br>
                         {{ j.short }} 
@@ -530,7 +538,7 @@
                             <br><br>
                             {% for p in j.position %}
                                 <em>{{ p.title }}  - {{p.location}}
-                                    <span class="dates">{{p.start-date}} - {% if p.end-date==""%}Present{% else%}{{p.end-date}}{%endif%}</span></em> <br>
+                                    <span class="dates role">{{p.start-date}} - {% if p.end-date==""%}Present{% else%}{{p.end-date}}{%endif%}</span></em> <br>
                             {% endfor %}
                             <hr>
                             <span>
