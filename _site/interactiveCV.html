@@ -187,6 +187,10 @@
                 body{
                     margin: 0;
                 };
+
+                #scroller{
+                    margin-left: 0px;
+                }
             }
 
         </style>
@@ -269,7 +273,7 @@
                     highlight = skill_highlights[highlight_index]
                     if(small_window){
                         header = document.getElementById("heading");
-                        header_height = header.offsetTop + header.offsetHeight + 16;
+                        header_height = header.offsetTop + header.offsetHeight;
                     }
                     else{
                         header_height = 0;
