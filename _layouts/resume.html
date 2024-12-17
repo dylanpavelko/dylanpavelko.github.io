@@ -193,7 +193,24 @@
             
         <script>
             var skill_highlights;
-            var highlight_index=0;
+            var highlight_index = 0;
+            var header_height = 0;
+            var small_window = false;
+
+            //https://www.w3schools.com/howto/howto_js_media_queries.asp
+            function myFunction(x) {
+                if (x.matches) { // If media query matches
+                    small_window = true;
+                } else {
+                    header_height = 0;
+                    small_window = false;
+                }
+            }
+            var x = window.matchMedia("(max-width: 700px)")
+            myFunction(x);
+            x.addEventListener("change", function() {
+                myFunction(x);
+            });
             
             function skill_highlight(element, skill){
                 //step one - unhighlight any previous skills (pills and details)
@@ -250,7 +267,14 @@
                 console.log("init y:" + window.scrollY)
                 if(highlight_index < skill_highlights.length){
                     highlight = skill_highlights[highlight_index]
-                    scrollToSmoothly(highlight.offsetTop, 500);
+                    if(small_window){
+                        header = document.getElementById("heading");
+                        header_height = header.offsetTop + header.offsetHeight + 16;
+                    }
+                    else{
+                        header_height = 0;
+                    }
+                    scrollToSmoothly(highlight.offsetTop + header_height, 500);
 
                     //if bottom of page is reached (or perhaps in all cases) move the skill scroller to a place that appropriately showcases the highlight
                     if(document.body.offsetHeight - highlight.offsetTop < window.innerHeight){
