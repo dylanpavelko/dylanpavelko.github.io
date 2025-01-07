@@ -23,7 +23,6 @@
             }
 
             #heading a[target="_blank"]::after {
-                test: "here";
                 content: url('white_external.png');
                 margin: 0 3px 0 5px;
             }
@@ -281,6 +280,9 @@
                     }
                     else{
                         header_height = 0;
+                    }
+                    if(window.navigator.userAgent.indexOf('Safari') > 0){
+                        header_height = header_height - 110;
                     }
                     scrollToSmoothly(highlight.offsetTop + header_height, 500);
 
