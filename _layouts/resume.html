@@ -281,10 +281,13 @@
                     else{
                         header_height = 0;
                     }
-                    if(window.navigator.userAgent.indexOf('Safari') > 0 && !(window.navigator.userAgent.indexOf('Chrome') > 0)){
-                        header_height = header_height - 110;
-                    }
-                    scrollToSmoothly(highlight.offsetTop + header_height, 500);
+                    // if(window.navigator.userAgent.indexOf('Safari') > 0 && !(window.navigator.userAgent.indexOf('Chrome') > 0)){
+                    //     header_height = header_height - 110;
+                    // }
+                    
+                    // var top = highlight.offsetTop;
+                    var top = window.pageYOffset + highlight.getBoundingClientRect().top - 110
+                    scrollToSmoothly(top + header_height, 500);
 
                     //if bottom of page is reached (or perhaps in all cases) move the skill scroller to a place that appropriately showcases the highlight
                     if(document.body.offsetHeight - highlight.offsetTop < window.innerHeight){
