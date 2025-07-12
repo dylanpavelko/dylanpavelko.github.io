@@ -1,10 +1,14 @@
 workday-pm-manager:
-  role: "Manager, Product Management"
-  time-in-role: "2.8 years"
+  role: "Senior Manager, Product Management"
+  time-in-role: "3.3 years"
   position:
+    - title: "Senior Manager, Product Management"
+      start-date: "May 2025"
+      end-date: ""
+      location: Los Angeles (Remote), CA
     - title: "Manager, Product Management"
       start-date: "Apr 2022"
-      end-date: ""
+      end-date: "Apr 2025"
       location: Los Angeles (Remote), CA
   short: "Passionate about building high-performing product management teams focused on delivering results."
   description: 
