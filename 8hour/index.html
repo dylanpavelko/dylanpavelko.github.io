@@ -460,7 +460,7 @@ $(document).ready(function() {
     var endTime = endBreak.addDurationInMinutes(MINUTES_PER_WORKDAY - beforeBreakDuration);
 
   
-    $("#answer").html("<p align='center'><br/>To work 8 hours, clock out at <strong>" + endTime.getPrettyTime() + "</strong><br /><a href='http://www.facebook.com/dialog/feed?   app_id=111966075570086&amp;   link=http://www.dylanpavelko.com/8hour/index.php&amp;   picture=http://www.dylanpavelko.com/8hour/8hour.png&amp;   name=I get off of work at " + endTime.getPrettyTime() + "!&amp;   caption=8 Hour Calculator&amp;   description=Find out when you are off of work, using the 8 Hour Calculator http://www.dylanpavelko.com/8hour/&amp;   message=I get off of work at " + endTime.getPrettyTime() + "!&amp;   redirect_uri=http://www.facebook.com/' target='_blank'><br><img src='share.jpg' width='56' height='28' alt='Share' /></a> with your friends on facebook when you get off work!<br><br></p>");
+    $("#answer").html("<p align='center'><br/>To work 8 hours, clock out at <strong>" + endTime.getPrettyTime() + "</strong><br /></p>");
   
     if(endTime.getHours() >= 24){
       $("#answer").html("You are working too strange of hours, clock out sometime the next day!");
