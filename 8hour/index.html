@@ -44,7 +44,7 @@
     var durationHours    = Math.floor(combinedMinutes / MINUTES_PER_HOUR);
     var remainingMinutes = combinedMinutes - (durationHours * MINUTES_PER_HOUR);
 
-    var combinedHours    = this.hours + durationHours;
+    var combinedHours    = (this.hours + durationHours) % 24;
     var ampm       = "AM";
 
     return new TimeEntry(combinedHours + ":" + remainingMinutes);
@@ -461,10 +461,6 @@ $(document).ready(function() {
 
   
     $("#answer").html("<p align='center'><br/>To work 8 hours, clock out at <strong>" + endTime.getPrettyTime() + "</strong><br /></p>");
-  
-    if(endTime.getHours() >= 24){
-      $("#answer").html("You are working too strange of hours, clock out sometime the next day!");
-    }
   });
   
 });
